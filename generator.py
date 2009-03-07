@@ -4,7 +4,7 @@ import os, shutil
 from jinja2 import Environment
 from jinja2 import BaseLoader, ChoiceLoader, FileSystemLoader, TemplateNotFound
 
-ROOT = op.dirname(__file__)
+ROOT = op.dirname(op.abspath(__file__))
 
 class ThemeLoader(BaseLoader):
     '''
@@ -14,15 +14,16 @@ class ThemeLoader(BaseLoader):
         self.theme = theme
 
     def get_source(self, env, template):
-        path = op.join(ROOT, 'themes', template)
+        path = op.join(ROOT, 'themes', self.theme, template)
         if not op.exists(path):
             raise TemplateNotFound(template)
-        mtime = getmtime(path)
+        mtime = op.getmtime(path)
         source = file(path).read().decode('utf-8')
-        return source, path, lambda: mtime == getmtime(path)
+        return source, path, lambda: mtime == op.getmtime(path)
 
 def generator(source, destination):
-    shutil.rmtree(destination)
+    if op.exists(destination):
+        shutil.rmtree(destination)
     os.mkdir(destination)
 
     loader = ChoiceLoader([
@@ -34,7 +35,10 @@ def generator(source, destination):
 
     for path, dirs, files in os.walk(source):
         relative = path[len(source):]
-        os.mkdir(op.join(destination, relative))
+        try:
+            os.mkdir(op.join(destination, relative))
+        except OSError:
+            pass
         for f in files:
             tmpl = env.get_template(op.join(relative, f))
             file(op.join(destination, relative, f), 'w').write(tmpl.render())
