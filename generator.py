@@ -4,6 +4,8 @@ import os, shutil
 from jinja2 import Environment
 from jinja2 import BaseLoader, ChoiceLoader, FileSystemLoader, TemplateNotFound
 
+from cyrax.lib import typogrify
+
 ROOT = op.dirname(op.abspath(__file__))
 
 class ThemeLoader(BaseLoader):
@@ -21,17 +23,31 @@ class ThemeLoader(BaseLoader):
         source = file(path).read().decode('utf-8')
         return source, path, lambda: mtime == op.getmtime(path)
 
-def generator(source, destination):
-    if op.exists(destination):
-        shutil.rmtree(destination)
-    os.mkdir(destination)
-
+def initialize_env(source):
+	'''
+	Initialize environment.
+	'''
     loader = ChoiceLoader([
         FileSystemLoader(source),
         ThemeLoader('default')
         ])
 
     env = Environment(loader=loader)
+	filters = dict((f.__name__, f) for f in typogrify.filters)
+	env.filters.update(filters)
+
+	return env
+
+
+def generator(source, destination):
+	'''
+	Find all content files and render them into deploy location.
+	'''
+    if op.exists(destination):
+        shutil.rmtree(destination)
+    os.mkdir(destination)
+
+	env = initialize_env(source)
 
     for path, dirs, files in os.walk(source):
         relative = path[len(source):]
@@ -40,5 +56,6 @@ def generator(source, destination):
         except OSError:
             pass
         for f in files:
-            tmpl = env.get_template(op.join(relative, f))
-            file(op.join(destination, relative, f), 'w').write(tmpl.render())
+            if not f.startswith('_'):
+                tmpl = env.get_template(op.join(relative, f))
+                file(op.join(destination, relative, f), 'w').write(tmpl.render())

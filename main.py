@@ -1,8 +1,13 @@
 #!/usr/bin/env python
 
-import os, sys
+import os, sys, logging
+import os.path as op
 
-from generator import generator
+logging.basicConfig()
+
+sys.path.insert(0, op.join(op.dirname(op.abspath(__file__)), '..'))
+
+from cyrax.generator import generator
 
 def main(argv):
     generator(os.path.abspath('content'), os.path.abspath('deploy'))
