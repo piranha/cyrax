@@ -24,30 +24,30 @@ class ThemeLoader(BaseLoader):
         return source, path, lambda: mtime == op.getmtime(path)
 
 def initialize_env(source):
-	'''
-	Initialize environment.
-	'''
+    '''
+    Initialize environment.
+    '''
     loader = ChoiceLoader([
         FileSystemLoader(source),
         ThemeLoader('default')
         ])
 
-    env = Environment(loader=loader)
-	filters = dict((f.__name__, f) for f in typogrify.filters)
-	env.filters.update(filters)
+    env = Environment(loader=loader, extensions=['cyrax.lib.cyraxtags.pageinfo'])
+    filters = dict((f.__name__, f) for f in typogrify.filters)
+    env.filters.update(filters)
 
-	return env
+    return env
 
 
 def generator(source, destination):
-	'''
-	Find all content files and render them into deploy location.
-	'''
+    '''
+    Find all content files and render them into deploy location.
+    '''
     if op.exists(destination):
         shutil.rmtree(destination)
     os.mkdir(destination)
 
-	env = initialize_env(source)
+    env = initialize_env(source)
 
     for path, dirs, files in os.walk(source):
         relative = path[len(source):]

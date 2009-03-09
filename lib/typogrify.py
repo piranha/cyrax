@@ -78,7 +78,7 @@ def caps(text):
     try:
         import smartypants
     except ImportError:
-		logger.error("Error in caps filter: The Python SmartyPants library isn't installed.")
+        logger.error("Error in caps filter: The Python SmartyPants library isn't installed.")
         return text
 
     tokens = smartypants._tokenize(text)
@@ -171,9 +171,9 @@ def smartypants(text):
     try:
         import smartypants
     except ImportError:
-		logger.error("Error in {% smartypants %} filter: The Python smartypants library isn't installed.")
+        logger.error("Error in {% smartypants %} filter: The Python smartypants library isn't installed.")
         return text
-	output = smartypants.smartyPants(text)
+    output = smartypants.smartyPants(text)
     return jinja2.Markup(output)
 
 
@@ -189,7 +189,7 @@ def titlecase(text):
     try:
         import titlecase
     except ImportError:
-		logger.error("Error in {% titlecase %} filter: The titlecase.py library isn't installed.")
+        logger.error("Error in {% titlecase %} filter: The titlecase.py library isn't installed.")
         return text
     else:
         return titlecase.titlecase(text)
@@ -270,14 +270,14 @@ def mdash(text):
 
 
 filters = [
-	amp,
-	caps,
-	initial_quotes,
-	smartypants,
-	titlecase,
-	typogrify,
-	widont,
-	mdash,
+    amp,
+    caps,
+    initial_quotes,
+    smartypants,
+    titlecase,
+    typogrify,
+    widont,
+    mdash,
 ]
 
 

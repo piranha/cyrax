@@ -2,9 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>{% block title %}{% endblock %}</title>
+	<title>{% block title %}{{ title }}{% endblock %}</title>
 </head>
 <body>
-	{% block content %}{% endblock %}
+  <h1>{{ title }}</h1>
+  {% block content %}{% endblock %}
 </body>
 </html>
