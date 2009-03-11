@@ -4,7 +4,7 @@ import os, shutil
 from jinja2 import Environment
 from jinja2 import BaseLoader, ChoiceLoader, FileSystemLoader, TemplateNotFound
 
-from cyrax.lib import typogrify
+from cyrax.lib import typogrify, templatefilters
 
 ROOT = op.dirname(op.abspath(__file__))
 
@@ -32,8 +32,11 @@ def initialize_env(source):
         ThemeLoader('default')
         ])
 
-    env = Environment(loader=loader, extensions=['cyrax.lib.cyraxtags.pageinfo'])
+    env = Environment(loader=loader, extensions=['cyrax.lib.templatetags.metainfo'])
+
     filters = dict((f.__name__, f) for f in typogrify.filters)
+    env.filters.update(filters)
+    filters = dict((f.__name__, f) for f in templatefilters.filters)
     env.filters.update(filters)
 
     return env

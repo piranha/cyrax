@@ -4,5 +4,11 @@
 {% endmeta %}
 
 {% block content %}
-  Preved from future.
+{% filter markdown %}
+Preved from future:
+
+ - one
+ - two
+ - three
+{% endfilter %}
 {% endblock %}

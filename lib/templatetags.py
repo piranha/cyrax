@@ -12,11 +12,11 @@ defaults = {
     'author': 'Alexander Solovyov',
     }
 
-class PageInfoExtension(Extension):
+class MetaInfoExtension(Extension):
     tags = set(['meta'])
 
     def __init__(self, environment):
-        super(PageInfoExtension, self).__init__(environment)
+        super(MetaInfoExtension, self).__init__(environment)
 
     def parse(self, parser):
         parser.parse_expression()
@@ -40,4 +40,4 @@ class PageInfoExtension(Extension):
 
 
 # nice name
-pageinfo = PageInfoExtension
+metainfo = MetaInfoExtension
