@@ -1,4 +1,9 @@
-import yaml
+from ConfigParser import ConfigParser
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
+
 from jinja2 import nodes
 from jinja2.ext import Extension
 
@@ -15,14 +20,22 @@ class PageInfoExtension(Extension):
 
     def parse(self, parser):
         parser.parse_expression()
-        conf = defaults.copy()
         meta = parser.parse_statements(['name:endmeta'], drop_needle=True)
-        conf.update(yaml.load(meta[0].nodes[0].data))
+        # ConfigParser wants to have section header
+        meta = u'[general]\n' + meta[0].nodes[0].data.strip()
+        # ConfigParser thinks he's reading file and tries to decode
+        meta = StringIO(meta.encode('utf-8'))
+        config = ConfigParser()
+        config.readfp(meta)
+
+        settings = defaults.copy()
+        settings.update(dict(config.items('general')))
+
         output = []
-        for key, value in conf.items():
+        for key, value in settings.items():
             output.append(nodes.Assign(nodes.Name(key, 'store'), nodes.Const(value)))
         # extend template
-        output.append(nodes.Extends(nodes.Const(conf['layout'])))
+        output.append(nodes.Extends(nodes.Const(settings['layout'])))
         return output
 
 
