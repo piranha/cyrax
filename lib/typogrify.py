@@ -47,7 +47,7 @@ def amp(text):
         suffix = groups.group('suffix') or ''
         return prefix + text + suffix
     output = intra_tag_finder.sub(_amp_process, text)
-    return Markup(output)
+    return jinja2.Markup(output)
 
 
 def caps(text):
@@ -211,6 +211,7 @@ def typogrify(text):
     text = smartypants(text)
     text = caps(text)
     text = initial_quotes(text)
+    text = mdash(text)
     return text
 
 def widont(text):
@@ -260,13 +261,13 @@ def widont(text):
                                    (</(a|em|span|strong|i|b)>\s*)*                 # optional closing inline tags with optional white space after each
                                    ((</(p|h[1-6]|li|dt|dd)>)|$))                   # end with a closing p, h1-6, li or the end of the string
                                    """, re.VERBOSE)
-    output = widont_finder.sub(r'\1&nbsp;\2', text)
+    output = widont_finder.sub(jinja2.Markup(r'\1&nbsp;\2'), text)
     return jinja2.Markup(output)
 
 
 mdash_finder = re.compile(r"([^\.\!\?]\s)\-(\s[^\.\!\?])")
 def mdash(text):
-    return jinja2.Markup(mdash_finder.sub(r'\1&mdash;\2', text))
+    return jinja2.Markup(mdash_finder.sub(jinja2.Markup(r'\1&mdash;\2'), text))
 
 
 filters = [
