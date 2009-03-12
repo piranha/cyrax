@@ -15,13 +15,16 @@ class Site(object):
     def __init__(self, root, dest):
         self.root = root
         self.dest = dest
-        self.settings = Settings()
+        self.settings = Settings(layout='_base.html')
         if op.exists(op.join(self.root, 'settings.cfg')):
             self.settings.read(file(op.join(self.root, 'settings.cfg')).read())
 
         self.env = initialize_env(root)
         self.env.globals['site'] = self
         self.entries = []
+
+    def __repr__(self):
+        return '<Site: %s>' % self.root
 
     def render(self):
         self.traverse()
@@ -45,12 +48,17 @@ class Entry(object):
     def __init__(self, site, path):
         self.site = site
         self.env = site.env
-        self._settings = Settings(self.site.settings)
+        self.settings = Settings(self.site.settings)
         self.path = path
         self.dest = op.join(self.site.dest, path)
-        self.template = self.env.get_template(path, globals={'self': self})
+        self.template = self.env.get_template(path, globals={'entry': self})
+
+    def __repr__(self):
+        return '<Entry: %s>' % self.path
+
+    def __getitem__(self, name):
+        return self.settings[name]
 
     def render(self):
         makedirs(op.dirname(self.dest))
         file(self.dest, 'w').write(self.template.render())
-

@@ -6,11 +6,13 @@ except ImportError:
 
 
 def parse_config(inp):
-    inp = inp.strip()
+    # ConfigParser don't like indent
+    inp = '\n'.join(line.strip() for line in inp.strip().splitlines())
+    # ...and tries to decode his input
     if isinstance(inp, unicode):
         inp = inp.encode('utf-8')
     config = ConfigParser()
-    # ConfigParser wants to have section header
+    # ...and wants to have section header
     config.readfp(StringIO('[general]\n' + inp))
     return dict(config.items('general'))
 

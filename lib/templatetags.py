@@ -9,11 +9,6 @@ from jinja2.ext import Extension
 
 from cyrax.lib.conf import parse_config
 
-defaults = {
-    'layout': '_base.html',
-    'author': 'Alexander Solovyov',
-    }
-
 class MetaInfoExtension(Extension):
     tags = set(['meta'])
 
@@ -22,16 +17,14 @@ class MetaInfoExtension(Extension):
 
     def parse(self, parser):
         token = parser.stream.next()
-        #parser.parse_expression()
 
         meta = parser.parse_statements(['name:endmeta'], drop_needle=True)
-        config = parse_config(meta[0].nodes[0].data)
-        settings = defaults.copy()
-        settings.update(config)
+        config = meta[0].nodes[0].data
 
-        output = []
-        for key, value in settings.items():
-            output.append(nodes.Assign(nodes.Name(key, 'store'), nodes.Const(value)))
-        # extend template
-        output.append(nodes.Extends(nodes.Const(settings['layout'])))
+        args = [nodes.Name('entry', 'load'), nodes.Const(config)]
+        output = [self.call_method('_update_entry', args=args),
+                  nodes.Extends(nodes.Const('_base.html')),]
         return output
+
+    def _update_entry(self, entry, config):
+        entry.settings.read(config)
