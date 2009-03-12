@@ -7,6 +7,8 @@ except ImportError:
 from jinja2 import nodes
 from jinja2.ext import Extension
 
+from cyrax.lib.conf import parse_config
+
 defaults = {
     'layout': '_base.html',
     'author': 'Alexander Solovyov',
@@ -19,17 +21,13 @@ class MetaInfoExtension(Extension):
         super(MetaInfoExtension, self).__init__(environment)
 
     def parse(self, parser):
-        parser.parse_expression()
-        meta = parser.parse_statements(['name:endmeta'], drop_needle=True)
-        # ConfigParser wants to have section header
-        meta = u'[general]\n' + meta[0].nodes[0].data.strip()
-        # ConfigParser thinks he's reading file and tries to decode
-        meta = StringIO(meta.encode('utf-8'))
-        config = ConfigParser()
-        config.readfp(meta)
+        token = parser.stream.next()
+        #parser.parse_expression()
 
+        meta = parser.parse_statements(['name:endmeta'], drop_needle=True)
+        config = parse_config(meta[0].nodes[0].data)
         settings = defaults.copy()
-        settings.update(dict(config.items('general')))
+        settings.update(config)
 
         output = []
         for key, value in settings.items():
@@ -37,7 +35,3 @@ class MetaInfoExtension(Extension):
         # extend template
         output.append(nodes.Extends(nodes.Const(settings['layout'])))
         return output
-
-
-# nice name
-metainfo = MetaInfoExtension
