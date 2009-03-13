@@ -1,14 +1,19 @@
 {% meta %}
-  title: Complete shit
+  title: Testing Platform
   author: Alexander Solovyov
 {% endmeta %}
 
 {% block content %}
-{% filter markdown %}
-Preved from future:
 
- - one
- - two
- - three
-{% endfilter %}
+<h1>Latest posts</h1>
+
+<table class="posts">
+  {% for post in site.posts %}
+  <tr>
+    <td class="date">{{ post.date.strftime('%Y, %B %d') }}</td>
+    <td class="title"><a href="{{ post.get_url() }}">{{ post }}</a></td>
+    <td class="tagline">{{ post.tagline }}</td>
+  </tr>
+  {% endfor %}
+</table>
 {% endblock %}

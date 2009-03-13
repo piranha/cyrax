@@ -1,0 +1,61 @@
+/* Copyright 2009 Alexander Solovyov */
+
+/* Base */
+
+html { font-size: 62.5%; }
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1.6em;
+    line-height: 1.125em;
+    min-width: 35em;
+    max-width: 45em;
+    margin: 0 auto;
+}
+
+input, button, textarea {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Links */
+
+a {
+    text-decoration: none;
+    color: #055580;
+}
+a:hover { color: #0777A0; }
+
+
+/* Posts table */
+
+.posts td {
+	padding: 1em 16px 1em 0;
+	vertical-align: bottom;
+	width: 35em;
+}
+
+.posts td.date p,
+.posts td.tagline p {
+	color: rgb(109, 116, 109);
+}
+
+.posts td.tagline {
+	width: 12em;
+}
+
+.posts td.date {
+    font-size: 1.2em;
+	width: 12em;
+}
+
+.posts td.title {
+	width: 32em;
+	padding-right: 0;
+}
+
+.posts td.title a {
+	font-size: 2em;
+	line-height: 1em;
+	letter-spacing: -0.05em;
+	padding-right: 16px;
+	display: block;
+}
