@@ -34,10 +34,7 @@ class Site(object):
 
     @property
     def posts(self):
-        p = []
-        for entry in self.entries:
-            if entry.type == 'post':
-                p.append(entry)
+        p = (e for e in self.entries if e.type == 'post')
         return sorted(p, key=lambda x: x.date, reverse=True)
 
     def _traverse(self):
