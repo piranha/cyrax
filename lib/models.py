@@ -24,7 +24,7 @@ class Site(object):
         self.entries = []
 
     def __repr__(self):
-        return '<Site: %s>' % self.root
+        return '<Site: %r>' % self.root
 
     def render(self):
         self._traverse()
@@ -86,7 +86,7 @@ class Entry(object):
         self.settings.slug = slug.rsplit('.', 1)[0]
 
     def __repr__(self):
-        return '<Entry: %s>' % str(self)
+        return '<Entry: %r>' % str(self)
 
     def __str__(self):
         try:
