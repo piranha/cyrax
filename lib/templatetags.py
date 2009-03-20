@@ -22,9 +22,16 @@ class MetaInfoExtension(Extension):
         config = meta[0].nodes[0].data
 
         args = [nodes.Name('entry', 'load'), nodes.Const(config)]
-        output = [self.call_method('_update_entry', args=args),
+
+        # Quick fix, till Jinja2 get's fixed
+        # Should be:
+        #  output = [self.call_method('_update_entry', args=args),
+        output = [nodes.CallBlock(self.call_method('_update_entry', args=args), [], [], ''),
                   nodes.Extends(nodes.Const('_base.html')),]
         return output
 
-    def _update_entry(self, entry, config):
+    def _update_entry(self, entry, config, caller):
         entry.settings.read(config)
+
+        # TODO: Remove me after Jinja2 will be fixed
+        return ''

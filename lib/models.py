@@ -39,7 +39,7 @@ class Site(object):
 
     def _traverse(self):
         for path, _, files in os.walk(self.root):
-            relative = path[len(self.root):].lstrip('/')
+            relative = path[len(self.root):].lstrip(os.sep)
             for f in files:
                 if not f.endswith('.cfg'):
                     self.add_page(op.join(relative, f))
@@ -69,7 +69,7 @@ class Entry(object):
         self.env = site.env
         self.path = path
         self.dest = self.site.dest
-        self.template = self.env.get_template(path, globals={'entry': self})
+        self.template = self.env.get_template(op.join(site.root, path), globals={'entry': self})
         self.settings = Settings(self.site.settings)
 
         if DATE_RE.search(self.path):
