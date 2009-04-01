@@ -111,13 +111,26 @@ class Entry(object):
         self.template = self.env.get_template(op.join(site.root, path),
                                               globals={'entry': self})
         self.settings = Settings(self.site.settings)
+
         self.collect()
 
-        for Type in TYPE_LIST:
-            if Type.check(self):
-                self.__class__ = new_base(self, Type)
-                self.settings.type = Type.__name__.lower()
-                break
+        if 'type' in self.settings:
+            try:
+                type = self.settings.type.lower()
+                Type = dict((x.__name__.lower(), x) for x in TYPE_LIST)[type]
+            except KeyError:
+                pass
+        else:
+            Type = None
+
+        if not Type:
+            for i in TYPE_LIST:
+                if i.check(self):
+                    Type = i
+                    break
+
+        self.__class__ = new_base(self, Type)
+        self.settings.type = Type.__name__.lower()
 
         super(self.__class__, self).__init__()
 
