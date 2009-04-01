@@ -1,4 +1,3 @@
-from ConfigParser import ConfigParser
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -7,7 +6,6 @@ except ImportError:
 from jinja2 import nodes
 from jinja2.ext import Extension
 
-from cyrax.lib.conf import parse_config
 
 class MetaInfoExtension(Extension):
     tags = set(['meta'])
@@ -25,7 +23,7 @@ class MetaInfoExtension(Extension):
 
         # Quick fix, till Jinja2 get's fixed
         # Should be:
-        #  output = [self.call_method('_update_entry', args=args),
+        #output = [self.call_method('_update_entry', args=args),
         output = [nodes.CallBlock(self.call_method('_update_entry', args=args), [], [], ''),
                   nodes.Extends(nodes.Const('_base.html')),]
         return output

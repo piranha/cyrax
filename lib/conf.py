@@ -6,7 +6,7 @@ except ImportError:
 
 
 def parse_config(inp):
-    # ConfigParser don't like indent
+    # ConfigParser doesn't like indent
     inp = '\n'.join(line.strip() for line in inp.strip().splitlines())
     # ...and tries to decode his input
     if isinstance(inp, unicode):

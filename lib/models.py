@@ -3,6 +3,7 @@ import os.path as op
 
 from cyrax.lib.conf import Settings
 from cyrax.lib.env import initialize_env
+from cyrax.lib.utils import new_base
 
 def makedirs(path):
     try:
@@ -28,7 +29,6 @@ class Site(object):
 
     def render(self):
         self._traverse()
-        self._collect()
         self._render()
         self._copy_static()
 
@@ -47,10 +47,6 @@ class Site(object):
     def add_page(self, path):
         self.entries.append(Entry(self, path))
 
-    def _collect(self):
-        for entry in self.entries:
-            entry.collect()
-
     def _render(self):
         for entry in self.entries:
             entry.render()
@@ -63,33 +59,71 @@ class Site(object):
 
 DATE_RE = re.compile(r'(.*?)(\d+)[/-](\d+)[/-](\d+)[/-](.*)$')
 
+class Post(object):
+    @staticmethod
+    def check(entry):
+        if DATE_RE.search(entry.path):
+            return True
+        return False
+
+    def __init__(self):
+        base, Y, M, D, slug = DATE_RE.search(self.path).groups()
+        self.settings.date = datetime.date(int(Y), int(M), int(D))
+        self.settings.base = base
+        self.settings.slug = slug.rsplit('.', 1)[0] # drop extension
+
+    def __str__(self):
+        return self.slug
+
+    def get_url(self):
+        date = self.date.strftime('%Y/%m/%d')
+        url = op.join(self.base, date, self.slug)
+        return url
+
+
+class Page(object):
+    @staticmethod
+    def check(entry):
+        return True
+
+    def __init__(self):
+        base, slug = op.split(self.path)
+        self.settings.base = base
+        self.settings.slug = slug.rsplit('.', 1)[0] # drop extension
+
+    def __str__(self):
+        return self.slug
+
+    def get_url(self):
+        url = op.join(self.base, self.slug)
+        return url
+
+
+TYPE_LIST = [Post, Page]
+
+
 class Entry(object):
     def __init__(self, site, path):
         self.site = site
         self.env = site.env
         self.path = path
         self.dest = self.site.dest
-        self.template = self.env.get_template(op.join(site.root, path), globals={'entry': self})
+        self.template = self.env.get_template(op.join(site.root, path),
+                                              globals={'entry': self})
         self.settings = Settings(self.site.settings)
+        self.collect()
 
-        if DATE_RE.search(self.path):
-            base, Y, M, D, slug = DATE_RE.search(self.path).groups()
-            self.settings.date = datetime.date(int(Y), int(M), int(D))
-            self.settings.type = 'post'
-        else:
-            base, slug = op.split(self.path)
-            self.settings.type = 'page'
-        self.settings.base = base
-        self.settings.slug = slug.rsplit('.', 1)[0]
+        for Type in TYPE_LIST:
+            if Type.check(self):
+                self.__class__ = new_base(self, Type)
+                self.settings.type = Type.__name__.lower()
+                break
+
+        super(self.__class__, self).__init__()
 
     def __repr__(self):
-        return '<Entry: %r>' % str(self)
-
-    def __str__(self):
-        try:
-            return self.title
-        except AttributeError:
-            return self.path
+        return '<Entry: %r>' % self.path
+        #return '<%s: %r>' % (self.settings.type.capitalize(), str(self))
 
     def __getitem__(self, name):
         return self.settings[name]
@@ -101,15 +135,9 @@ class Entry(object):
             raise AttributeError
 
     def get_url(self):
-        # maybe it's better to explicitly type self.settings.type?
-        if self.type == 'page':
-            url = op.join(self.base, self.slug)
-        elif self.type == 'post':
-            date = self.date.strftime('%Y/%m/%d')
-            url = op.join(self.base, date, self.slug)
-        else:
-            raise NotImplementedError
+        url = super(self.__class__, self).get_url()
 
+        # to always make directories with .index files
         if url.endswith('/index') or url == 'index':
             url += '.html'
         elif not url.endswith('/'):
