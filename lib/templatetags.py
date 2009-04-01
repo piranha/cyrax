@@ -24,8 +24,9 @@ class MetaInfoExtension(Extension):
         # Quick fix, till Jinja2 get's fixed
         # Should be:
         #output = [self.call_method('_update_entry', args=args),
-        output = [nodes.CallBlock(self.call_method('_update_entry', args=args), [], [], ''),
-                  nodes.Extends(nodes.Const('_base.html')),]
+        output = [nodes.CallBlock(self.call_method('_update_entry', args=args),
+                                  [], [], ''),
+                  nodes.Extends(nodes.Const('_base.html'))]
         return output
 
     def _update_entry(self, entry, config, caller):
