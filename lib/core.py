@@ -1,10 +1,12 @@
-import os, shutil
+import os, shutil, logging
 import os.path as op
 
 from cyrax.lib.conf import Settings
 from cyrax.lib.env import initialize_env
 from cyrax.lib.utils import new_base
 from cyrax.lib.models import TYPE_LIST
+
+logger = logging.getLogger('core')
 
 
 def makedirs(path):
@@ -125,6 +127,8 @@ class Entry(object):
         self.template.render()
 
     def render(self):
+        logger.info('Rendering %s' % self)
         path = self.get_dest()
         makedirs(op.dirname(path))
         file(path, 'w').write(self.template.render())
+        logger.info('Successfully rendered %s' % self)
