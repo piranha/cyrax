@@ -1,6 +1,6 @@
 from jinja2 import Environment, FileSystemLoader
 
-from cyrax.lib import typogrify, templatefilters, templatetags
+from cyraxlib import typogrify, templatefilters, templatetags
 
 
 def initialize_env(source):

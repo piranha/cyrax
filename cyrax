@@ -4,11 +4,8 @@ import os, sys, logging
 import os.path as op
 from optparse import OptionParser
 
-sys.path.insert(0, op.join(op.dirname(op.abspath(__file__)), '..'))
-
-import cyrax
-from cyrax.lib.core import Site
-from cyrax.lib.server import start_server
+from cyraxlib.core import Site
+from cyraxlib.server import start_server
 
 
 def main():

@@ -1,10 +1,10 @@
 import os, shutil, logging
 import os.path as op
 
-from cyrax.lib.conf import Settings
-from cyrax.lib.env import initialize_env
-from cyrax.lib.utils import new_base
-from cyrax.lib.models import TYPE_LIST
+from cyraxlib.conf import Settings
+from cyraxlib.env import initialize_env
+from cyraxlib.utils import new_base
+from cyraxlib.models import TYPE_LIST
 
 logger = logging.getLogger('core')
 
