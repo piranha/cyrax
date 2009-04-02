@@ -34,7 +34,7 @@ class Post(object):
 class Page(object):
     @staticmethod
     def check(entry):
-        return True
+        return entry.path.endswith('.html')
 
     def __init__(self):
         base, slug = op.split(self.path)

@@ -48,9 +48,10 @@ class Site(object):
     def _traverse(self):
         for path, _, files in os.walk(self.root):
             relative = path[len(self.root):].lstrip(os.sep)
-            for f in files:
-                if not f.startswith('_') and not f == 'settings.cfg':
-                    self.add_page(op.join(relative, f))
+            if not relative.startswith('static'):
+                for f in files:
+                    if not f.startswith('_') and not f == 'settings.cfg':
+                        self.add_page(op.join(relative, f))
 
     def add_page(self, path):
         self.entries.append(Entry(self, path))
@@ -58,6 +59,12 @@ class Site(object):
     def render(self):
         for entry in self.entries:
             entry.render()
+        self._copy_static()
+
+    def _copy_static(self):
+        logger.info('Copying static files')
+        shutil.copytree(op.join(self.root, 'static'),
+                        op.join(self.dest, 'static'))
 
 
 class Entry(object):
@@ -66,9 +73,9 @@ class Entry(object):
         self.env = site.env
         self.path = path
         self.dest = self.site.dest
-        self.template = self.env.get_template(path, globals={'entry': self})
-        self.settings = Settings(self.site.settings)
 
+        self.settings = Settings(self.site.settings)
+        self.template = self.env.get_template(path, globals={'entry': self})
         self.collect()
 
         # Determine type
@@ -87,10 +94,13 @@ class Entry(object):
                     Type = i
                     break
 
+        if not Type:
+            logger.info("Can't determine type for %s" % self)
+            return
+
         self.__class__ = new_base(self, Type)
         self.settings.type = Type.__name__.lower()
 
-        # initialize my new base class
         super(self.__class__, self).__init__()
 
         base = '_%s.html' % self.settings.type
@@ -121,4 +131,3 @@ class Entry(object):
         path = self.get_dest()
         makedirs(op.dirname(path))
         file(path, 'w').write(self.template.render())
-        logger.info('Successfully rendered %s' % self)
