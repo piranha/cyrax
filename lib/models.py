@@ -1,8 +1,8 @@
 import re, datetime
 import os.path as op
 
-
 DATE_RE = re.compile(r'(.*?)(\d+)[/-](\d+)[/-](\d+)[/-](.*)$')
+
 
 class Post(object):
     @staticmethod
@@ -16,6 +16,11 @@ class Post(object):
         self.settings.date = datetime.date(int(Y), int(M), int(D))
         self.settings.base = base
         self.settings.slug = slug.rsplit('.', 1)[0] # drop extension
+
+        if not hasattr(self.site, 'posts'):
+            self.site.posts = []
+        self.site.posts.append(self)
+        self.site.posts.sort(key=lambda x: x.date, reverse=True)
 
     def __str__(self):
         return self.slug
@@ -35,6 +40,10 @@ class Page(object):
         base, slug = op.split(self.path)
         self.settings.base = base
         self.settings.slug = slug.rsplit('.', 1)[0] # drop extension
+
+        if not hasattr(self.site, 'pages'):
+            self.site.pages = []
+        self.site.pages.append(self)
 
     def __str__(self):
         return self.slug

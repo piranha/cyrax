@@ -36,11 +36,6 @@ class Site(object):
         self._render()
         self._copy_static()
 
-    @property
-    def posts(self):
-        p = (e for e in self.entries if e.type == 'post')
-        return sorted(p, key=lambda x: x.date, reverse=True)
-
     def _traverse(self):
         for path, _, files in os.walk(self.root):
             relative = path[len(self.root):].lstrip(os.sep)
