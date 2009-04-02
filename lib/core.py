@@ -20,19 +20,32 @@ class Site(object):
     def __init__(self, root, dest):
         self.root = root
         self.dest = dest
-        self.settings = Settings(layout='_base.html')
-        if op.exists(op.join(self.root, 'settings.cfg')):
-            self.settings.read(file(op.join(self.root, 'settings.cfg')).read())
+        if op.exists(dest):
+            shutil.rmtree(dest)
+
+        self.settings = Settings(parent_tmpl='_base.html')
+        conf = op.join(self.root, 'settings.cfg')
+        if op.exists(conf):
+            self.settings.read(file(conf).read())
 
         self.env = initialize_env(root)
         self.env.globals['site'] = self
         self.entries = []
+        self._traverse()
 
     def __repr__(self):
         return '<Site: %r>' % self.root
 
+    def __getitem__(self, name):
+        return self.settings[name]
+
+    def __getattr__(self, name):
+        try:
+            return self.settings[name]
+        except KeyError:
+            raise AttributeError
+
     def render(self):
-        self._traverse()
         self._render()
         self._copy_static()
 
@@ -40,7 +53,7 @@ class Site(object):
         for path, _, files in os.walk(self.root):
             relative = path[len(self.root):].lstrip(os.sep)
             for f in files:
-                if not f.endswith('.cfg'):
+                if not f.startswith('_') and f.endswith('.html'):
                     self.add_page(op.join(relative, f))
 
     def add_page(self, path):
@@ -52,7 +65,7 @@ class Site(object):
 
     def _copy_static(self):
         # static should be placed somewhere else
-        shutil.copytree(op.join(op.dirname(self.root), 'static'),
+        shutil.copytree(op.join(self.root, 'static'),
                         op.join(self.dest, 'static'))
 
 
@@ -62,8 +75,7 @@ class Entry(object):
         self.env = site.env
         self.path = path
         self.dest = self.site.dest
-        self.template = self.env.get_template(op.join(site.root, path),
-                                              globals={'entry': self})
+        self.template = self.env.get_template(path, globals={'entry': self})
         self.settings = Settings(self.site.settings)
 
         self.collect()

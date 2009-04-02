@@ -2,7 +2,7 @@
   title: Extensible Types
 {% endmeta %}
 
-{% block content %}{% filter markdown %}
+{% block content %}{{ super() }}{% filter markdown %}
 Finally I've got idea how to properly implement extensible types of pages. In
 short: dynamic subclassing of predefined classes. This will allow to add any
 other type in future without a hassle.
