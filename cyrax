@@ -16,6 +16,8 @@ def main():
                       help='redirect log to this file (default: stdout)')
     parser.add_option('-q', '--quiet', default=False, action='store_true',
                       help='do not output information messages')
+    parser.add_option('-v', '--verbose', default=False, action='store_true',
+                      help='output more logs')
 
     parser.add_option('-w', '--webserve', default=False, action='store_true',
                       help='start server instead of site generation')
@@ -35,7 +37,12 @@ def main():
         parser.print_help()
         sys.exit()
 
-    level = opts.quiet and logging.ERROR or logging.INFO
+    if opts.verbose:
+        level = logging.DEBUG
+    elif opts.quiet:
+        level = logging.ERROR
+    else:
+        level = logging.INFO
     if opts.log == '-':
         logging.basicConfig(stream=sys.stdout, level=level)
     else:

@@ -5,6 +5,7 @@ from cyraxlib.conf import Settings
 from cyraxlib.env import initialize_env
 from cyraxlib.utils import new_base
 from cyraxlib.models import TYPE_LIST
+from cyraxlib.events import events
 
 logger = logging.getLogger('core')
 
@@ -59,6 +60,7 @@ class Site(object):
     def render(self):
         for entry in self.entries:
             entry.render()
+        events.emit('site-render-finished', self)
         self._copy_static()
 
     def _copy_static(self):
