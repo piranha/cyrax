@@ -1,7 +1,7 @@
 import os.path as op
 import os, shutil
 
-from cyrax.lib.models import Site
+from cyrax.lib.core import Site
 
 def generator(source, destination):
     '''
