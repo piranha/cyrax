@@ -15,7 +15,7 @@ class Post(object):
         base, Y, M, D, slug = DATE_RE.search(self.path).groups()
         self.settings.date = datetime.date(int(Y), int(M), int(D))
         self.settings.base = base
-        self.settings.slug = slug.rsplit('.', 1)[0] # drop extension
+        self.settings.slug = slug
 
         if not hasattr(self.site, 'posts'):
             self.site.posts = []
@@ -23,7 +23,7 @@ class Post(object):
         self.site.posts.sort(key=lambda x: x.date, reverse=True)
 
     def __str__(self):
-        return self.slug
+        return op.splitext(self.slug)[0]
 
     def get_url(self):
         date = self.date.strftime('%Y/%m/%d')
@@ -39,7 +39,7 @@ class Page(object):
     def __init__(self):
         base, slug = op.split(self.path)
         self.settings.base = base
-        self.settings.slug = slug.rsplit('.', 1)[0] # drop extension
+        self.settings.slug = slug
 
         if not hasattr(self.site, 'pages'):
             self.site.pages = []

@@ -45,28 +45,19 @@ class Site(object):
         except KeyError:
             raise AttributeError
 
-    def render(self):
-        self._render()
-        self._copy_static()
-
     def _traverse(self):
         for path, _, files in os.walk(self.root):
             relative = path[len(self.root):].lstrip(os.sep)
             for f in files:
-                if not f.startswith('_') and f.endswith('.html'):
+                if not f.startswith('_') and not f == 'settings.cfg':
                     self.add_page(op.join(relative, f))
 
     def add_page(self, path):
         self.entries.append(Entry(self, path))
 
-    def _render(self):
+    def render(self):
         for entry in self.entries:
             entry.render()
-
-    def _copy_static(self):
-        # static should be placed somewhere else
-        shutil.copytree(op.join(self.root, 'static'),
-                        op.join(self.dest, 'static'))
 
 
 class Entry(object):
@@ -108,7 +99,6 @@ class Entry(object):
 
     def __repr__(self):
         return '<Entry: %r>' % self.path
-        #return '<%s: %r>' % (self.settings.type.capitalize(), str(self))
 
     def __getitem__(self, name):
         return self.settings[name]
@@ -119,21 +109,8 @@ class Entry(object):
         except KeyError:
             raise AttributeError
 
-    def get_url(self):
-        url = super(self.__class__, self).get_url()
-
-        # to always make directories with .index files
-        if url.endswith('/index') or url == 'index':
-            url += '.html'
-        elif not url.endswith('/'):
-            url += '/'
-        return url
-
     def get_dest(self):
-        dest = op.join(self.dest, self.get_url())
-        if not dest.endswith('.html'):
-            dest = op.join(dest, 'index.html')
-        return dest
+        return op.join(self.dest, self.get_url())
 
     def collect(self):
         # some parameters are determined at render time

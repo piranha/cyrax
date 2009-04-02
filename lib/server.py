@@ -15,8 +15,10 @@ def start_server(address, port, path):
     class Root:
         @cherrypy.expose
         def default(self, *args):
-            fn = op.join(path, *(args + ('index.html', )))
+            fn = op.join(path, *args)
             if op.exists(fn):
+                if op.isdir(fn):
+                    return serve_file(op.join(fn, 'index.html'))
                 return serve_file(fn)
             raise cherrypy.NotFound
 
