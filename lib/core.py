@@ -102,6 +102,10 @@ class Entry(object):
         # initialize my new base class
         super(self.__class__, self).__init__()
 
+        base = '_%s.html' % self.settings.type
+        if op.exists(op.join(self.site.root, base)):
+            self.settings.parent_tmpl = base
+
     def __repr__(self):
         return '<Entry: %r>' % self.path
         #return '<%s: %r>' % (self.settings.type.capitalize(), str(self))

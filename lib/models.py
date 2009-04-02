@@ -16,7 +16,6 @@ class Post(object):
         self.settings.date = datetime.date(int(Y), int(M), int(D))
         self.settings.base = base
         self.settings.slug = slug.rsplit('.', 1)[0] # drop extension
-        self.settings.parent_tmpl = '_post.html'
 
         if not hasattr(self.site, 'posts'):
             self.site.posts = []
