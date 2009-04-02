@@ -62,9 +62,10 @@ class Site(object):
         self._copy_static()
 
     def _copy_static(self):
-        logger.info('Copying static files')
-        shutil.copytree(op.join(self.root, 'static'),
-                        op.join(self.dest, 'static'))
+        if op.exists(op.join(self.root, 'static')):
+            logger.info('Copying static files')
+            shutil.copytree(op.join(self.root, 'static'),
+                            op.join(self.dest, 'static'))
 
 
 class Entry(object):
