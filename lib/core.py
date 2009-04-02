@@ -73,6 +73,7 @@ class Entry(object):
 
         self.collect()
 
+        # Determine type
         if 'type' in self.settings:
             try:
                 type = self.settings.type.lower()
@@ -91,6 +92,7 @@ class Entry(object):
         self.__class__ = new_base(self, Type)
         self.settings.type = Type.__name__.lower()
 
+        # initialize my new base class
         super(self.__class__, self).__init__()
 
     def __repr__(self):
