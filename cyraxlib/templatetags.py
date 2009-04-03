@@ -5,9 +5,6 @@ from jinja2.ext import Extension
 class MetaInfoExtension(Extension):
     tags = set(['meta'])
 
-    def __init__(self, environment):
-        super(MetaInfoExtension, self).__init__(environment)
-
     def parse(self, parser):
         token = parser.stream.next()
         lineno = token.lineno
@@ -30,9 +27,29 @@ class MetaInfoExtension(Extension):
 
     def _update_entry(self, entry, config, caller):
         entry.settings.read(config)
-
-        # TODO: Remove me after Jinja2 will be fixed
+        # TODO: Remove me when Jinja2 will be fixed
         return ''
 
     def _determine_parent(self, entry):
         return entry.settings.parent_tmpl
+
+
+class MarkExtension(Extension):
+    tags = set(['mark'])
+
+    def parse(self, parser):
+        token = parser.stream.next()
+        lineno = token.lineno
+
+        name = parser.stream.next().value
+        args = [nodes.Name('entry', 'load'), nodes.Const(name)]
+        body = parser.parse_statements(['name:endmark'], drop_needle=True)
+
+        return nodes.CallBlock(self.call_method('_set_attr', args=args),
+                               [], [], body).set_lineno(lineno)
+
+    def _set_attr(self, entry, name, caller):
+        if entry:
+            setattr(entry, name, caller())
+        # TODO: Remove me when Jinja2 will be fixed
+        return ''

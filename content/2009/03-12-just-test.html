@@ -2,6 +2,7 @@
   title: Just test
 {% endmeta %}
 
-{% block content %}{{ super() }}{% filter markdown %}
+{% mark body %}
+{% filter markdown %}
 Here I'm writing some words about testing Cyrax.
-{% endfilter %}{% endblock %}
+{% endfilter %}{% endmark %}

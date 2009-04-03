@@ -2,11 +2,11 @@
   title: Extensible Types
 {% endmeta %}
 
-{% block content %}{{ super() }}{% filter markdown %}
+{% mark body %}{% filter markdown %}
 Finally I've got idea how to properly implement extensible types of pages. In
 short: dynamic subclassing of predefined classes. This will allow to add any
 other type in future without a hassle.
 
 Nice thing is that I don't need to be overly concerned of performance, as it's
 just one-time generation of static pages. ;-)
-{% endfilter %}{% endblock %}
+{% endfilter %}{% endmark %}

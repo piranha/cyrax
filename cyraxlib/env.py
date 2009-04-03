@@ -9,7 +9,8 @@ def initialize_env(source):
     '''
     loader = FileSystemLoader(source)
 
-    env = Environment(loader=loader, extensions=[templatetags.MetaInfoExtension])
+    env = Environment(loader=loader, extensions=[templatetags.MetaInfoExtension,
+                                                 templatetags.MarkExtension])
 
     filters = dict((f.__name__, f) for f in typogrify.filters)
     env.filters.update(filters)
