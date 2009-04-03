@@ -24,17 +24,19 @@ class EventManager(object):
         self._listeners = {}
         self._last_listener = 0
 
-    def connect(self, event, callback, position='after'):
-        """Connect a callback to an event."""
-        assert position in ('before', 'after'), 'invalid position'
+    def connect(self, event, callback, prepend=False):
+        """Connect a callback to an event.
+
+        If `prepend` is True, prepend callback to a queue of callbacks.
+        """
         listener_id = self._last_listener
         event = intern(event)
         if event not in self._listeners:
             self._listeners[event] = deque([callback])
-        elif position == 'after':
-            self._listeners[event].append(callback)
-        elif position == 'before':
+        elif prepend:
             self._listeners[event].appendleft(callback)
+        else:
+            self._listeners[event].append(callback)
         self._last_listener += 1
         return listener_id
 
