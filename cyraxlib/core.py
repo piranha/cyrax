@@ -43,8 +43,8 @@ class Site(object):
     def __getattr__(self, name):
         try:
             return self.settings[name]
-        except KeyError:
-            raise AttributeError
+        except KeyError, e:
+            raise AttributeError(e.message)
 
     def _traverse(self):
         for path, _, files in os.walk(self.root):
@@ -118,7 +118,8 @@ class Entry(BaseEntry):
             self.settings.parent_tmpl = base
 
     def __repr__(self):
-        return '<Entry: %r>' % self.path
+        type = self.settings.get('type').capitalize() or 'Entry'
+        return '<%s: %r>' % (type, self.path)
 
     def __getitem__(self, name):
         return self.settings[name]
