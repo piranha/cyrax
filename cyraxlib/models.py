@@ -13,7 +13,7 @@ class Post(object):
 
     def __init__(self):
         base, Y, M, D, slug = DATE_RE.search(self.path).groups()
-        self.settings.date = datetime.date(int(Y), int(M), int(D))
+        self.settings.date = datetime.datetime(int(Y), int(M), int(D))
         self.settings.base = base
         self.settings.slug = slug
 
@@ -34,7 +34,7 @@ class Post(object):
 class Page(object):
     @staticmethod
     def check(entry):
-        return entry.path.endswith('.html')
+        return True
 
     def __init__(self):
         base, slug = op.split(self.path)

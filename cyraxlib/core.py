@@ -1,4 +1,4 @@
-import os, shutil, logging
+import os, shutil, logging, datetime, time
 import os.path as op
 
 from cyraxlib.conf import Settings
@@ -70,13 +70,20 @@ class Site(object):
                             op.join(self.dest, 'static'))
 
 
-class Entry(object):
+class BaseEntry(object):
+    'Class, used in collection phase, when type is not determined yet'
+    def get_url(self):
+        return ''
+
+class Entry(BaseEntry):
     def __init__(self, site, path):
         self.site = site
         self.env = site.env
         self.path = path
         self.dest = self.site.dest
 
+        mtime = op.getmtime(op.join(site.root, path))
+        self.mtime = datetime.datetime(*time.gmtime(mtime)[:6])
         self.settings = Settings(self.site.settings)
         self.template = self.env.get_template(path, globals={'entry': self})
         self.collect()
@@ -128,6 +135,9 @@ class Entry(object):
     def collect(self):
         # some parameters are determined at render time
         self.template.render()
+
+    def get_absolute_url(self):
+        return self.site.settings.url + self.get_url()
 
     def render(self):
         logger.info('Rendering %s' % self)

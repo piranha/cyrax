@@ -33,6 +33,10 @@ def textile(value):
 
     return textile.textile(value)
 
-filters = [markdown,
-           rst,
-           textile]
+
+def rfc3339(date):
+    tz = date.strftime('%Z') or 'Z'
+    return date.isoformat() + tz
+
+
+filters = [markdown, rst, textile, rfc3339]
