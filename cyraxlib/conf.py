@@ -1,20 +1,37 @@
-from ConfigParser import ConfigParser
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
+'''Parser of naive data format
+Copyright 2009 Alexander Solovyov, under terms of Poetic License
+
+Format:
+
+  key: value
+  key: [list, of, values]
+  key: {key: value, key: value}
+'''
 
 
-def parse_config(inp):
-    # ConfigParser doesn't like indent
-    inp = '\n'.join(line.strip() for line in inp.strip().splitlines())
-    # ...and tries to decode his input
-    if isinstance(inp, unicode):
-        inp = inp.encode('utf-8')
-    config = ConfigParser()
-    # ...and wants to have section header
-    config.readfp(StringIO('[general]\n' + inp))
-    return dict(config.items('general'))
+def parse(data):
+    result = {}
+    for line in data.splitlines():
+        try:
+            key, value = parse_line(line)
+            result[key] = value
+        except ValueError:
+            pass
+    return result
+
+
+def parse_line(line):
+    key, value = strip(line.split(':', 1))
+    s, e = value.startswith, value.endswith
+    if s('[') and e(']'):
+        value = strip(value[1:-1].split(','))
+    elif s('{') and e('}'):
+        value = dict(strip(x.split(':')) for x in value.split(','))
+    return key, value
+
+
+def strip(lst):
+    return [x.strip() for x in lst]
 
 
 class Settings(dict):
@@ -23,7 +40,7 @@ class Settings(dict):
         super(Settings, self).__init__(**kwargs)
 
     def read(self, inp):
-        self.update(parse_config(inp))
+        self.update(parse(inp))
         return self
 
     def __getitem__(self, name):
