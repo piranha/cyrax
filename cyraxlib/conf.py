@@ -6,6 +6,8 @@ Format:
   key: value
   key: [list, of, values]
   key: {key: value, key: value}
+
+Any line without a ":" is simply skipped.
 '''
 
 
