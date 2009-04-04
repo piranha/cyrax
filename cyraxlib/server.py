@@ -29,7 +29,4 @@ def start_server(address, port, path):
             'tools.staticdir.dir': op.join(path, 'static'),
             'tools.staticdir.on': True,
             }}
-    cherrypy.tree.mount(Root(), '/', conf)
-
-    cherrypy.engine.autoreload.unsubscribe()
-    cherrypy.engine.start()
+    cherrypy.quickstart(Root(), '/', conf)
