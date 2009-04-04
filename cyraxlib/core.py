@@ -76,16 +76,32 @@ class BaseEntry(object):
         return ''
 
 class Entry(BaseEntry):
-    def __init__(self, site, path):
-        self.site = site
-        self.env = site.env
-        self.path = path
-        self.dest = self.site.dest
+    def __init__(self, site, path, source=None):
+        '''Initialize an entry
 
-        mtime = op.getmtime(op.join(site.root, path))
-        self.mtime = datetime.datetime(*time.gmtime(mtime)[:6])
-        self.settings = Settings(self.site.settings)
-        self.template = self.env.get_template(path, globals={'entry': self})
+        This involves change of base class by running static method Class.check
+        of every member of models.TYPE_LIST.
+
+        Arguments:
+
+         - `site`: site this entry belongs to
+         - `path`: relative path to source template and to result
+         - `source`: ability to override source template, means that current
+            entry is "virtual" (has no real equivalent in source directory).
+            Hence `mtime` will be current time.
+        '''
+        self.site = site
+        self.path = path
+
+        if source:
+            self.mtime = datetime.datetime.now()
+        else:
+            mtime = op.getmtime(op.join(site.root, path))
+            self.mtime = datetime.datetime(*time.gmtime(mtime)[:6])
+
+        self.settings = Settings(parent=self.site.settings)
+        self.template = site.env.get_template(source or path,
+                                              globals={'entry': self})
         self.collect()
 
         # Determine type
@@ -131,7 +147,7 @@ class Entry(BaseEntry):
             raise AttributeError
 
     def get_dest(self):
-        return op.join(self.dest, self.get_url())
+        return op.join(self.site.dest, self.get_url())
 
     def collect(self):
         # some parameters are determined at render time
