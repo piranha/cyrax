@@ -1,6 +1,8 @@
 import re, datetime
 import os.path as op
 
+from cyraxlib.events import events
+
 DATE_RE = re.compile(r'(.*?)(\d+)[/-](\d+)[/-](\d+)[/-](.*)$')
 
 
@@ -21,6 +23,11 @@ class Post(object):
             self.site.posts = []
         self.site.posts.append(self)
         self.site.posts.sort(key=lambda x: x.date, reverse=True)
+
+        if 'tags' in self.settings:
+            for tag in self.settings.tags:
+                self.site.tags.setdefault(tag, []).append(self)
+                self.site.tags[tag].sort(key=lambda x: x.date, reverse=True)
 
     def __str__(self):
         return op.splitext(self.slug)[0]
@@ -53,5 +60,29 @@ class Page(object):
         return url
 
 
-TYPE_LIST = [Post, Page]
+class Tag(object):
+    @staticmethod
+    def check(entry):
+        return entry.path.startswith('tag/')
 
+    def __init__(self):
+        self.slug = self.path[len('tag/'):-len('.html')]
+        self.site.tag_cache[self.slug] = self
+
+    def __str__(self):
+        return self.slug
+
+    def get_url(self):
+        return self.path
+
+
+def add_taglist_entries(site):
+    from cyraxlib.core import Entry
+    site.tag_cache = {}
+    for tag in site.tags:
+        site.entries.append(Entry(site, 'tag/%s.html' % tag, '_taglist.html'))
+
+events.connect('site-traversed', add_taglist_entries)
+
+
+TYPE_LIST = [Post, Tag, Page]

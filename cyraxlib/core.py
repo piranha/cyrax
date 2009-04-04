@@ -32,6 +32,7 @@ class Site(object):
         self.env = initialize_env(root)
         self.env.globals['site'] = self
         self.entries = []
+        self.tags = {}
         self._traverse()
 
     def __repr__(self):
@@ -53,6 +54,7 @@ class Site(object):
                 for f in files:
                     if not f.startswith('_') and not f == 'settings.cfg':
                         self.add_page(op.join(relative, f))
+        events.emit('site-traversed', site=self)
 
     def add_page(self, path):
         self.entries.append(Entry(self, path))
@@ -60,7 +62,7 @@ class Site(object):
     def render(self):
         for entry in self.entries:
             entry.render()
-        events.emit('site-render-finished', self)
+        events.emit('site-rendered', site=self)
         self._copy_static()
 
     def _copy_static(self):

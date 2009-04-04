@@ -1,14 +1,12 @@
-{% meta %}
-  title: Testing Platform
-  author: Alexander Solovyov
-{% endmeta %}
+{% extends "_base.html" %}
+
+{% block title %}{{ entry.slug }} tag{% endblock %}
 
 {% block content %}
-
-<h2>Latest posts</h2>
+<h2>Posts with tag {{ entry.slug }}</h2>
 
 <table class="posts">
-  {% for post in site.posts %}
+  {% for post in site.tags[entry.slug] %}
   <tr>
     <td class="date">{{ post.date.strftime('%Y, %B %d') }}</td>
     <td class="title"><a href="{{ post.get_absolute_url() }}">{{ post.title }}</a></td>
