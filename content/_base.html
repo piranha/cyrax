@@ -6,12 +6,12 @@
   <meta name="author" content="{{ author }}" />
   <title>{{ site.title }}{% block title %}: {{ entry.title }}{% endblock %}</title>
 
-  <link rel="stylesheet" href="/static/css/syntax.css" type="text/css" />
-  <link rel="stylesheet" href="/static/css/main.css" type="text/css" />
-  <link href="/feed.atom" rel="alternate" title="{{ site.title }}" type="application/atom+xml" />
+  <link rel="stylesheet" href="{{ site.url }}static/css/syntax.css" type="text/css" />
+  <link rel="stylesheet" href="{{ site.url }}static/css/main.css" type="text/css" />
+  <link href="{{ site.url }}feed.atom" rel="alternate" title="{{ site.title }}" type="application/atom+xml" />
 </head>
 <body>
-  <h1><a href="/">{{ site.title }}</a></h1>
+  <h1><a href="{{ site.url }}">{{ site.title }}</a></h1>
   {% block content %}{% endblock %}
 </body>
 </html>
