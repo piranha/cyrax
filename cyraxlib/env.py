@@ -5,9 +5,12 @@ from cyraxlib import typogrify, templatefilters, templatetags
 
 class LoyalUnderfined(Undefined):
     def __getattr__(self, name):
-        return
+        return self
 
     __getitem__ = __getattr__
+
+    def __call__(self, *args, **kwargs):
+        return self
 
 
 def initialize_env(source):
