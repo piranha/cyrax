@@ -1,2 +1,2 @@
-^deploy/
+^content/_build
 \.pyc$

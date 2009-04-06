@@ -9,7 +9,7 @@ from cyraxlib.server import start_server
 
 
 def main():
-    usage = '%s [options]' % sys.argv[0]
+    usage = '%s [options] [source]' % sys.argv[0]
     parser = OptionParser(usage)
 
     parser.add_option('', '--log', default='-',
@@ -26,16 +26,18 @@ def main():
     parser.add_option('-p', '--port', default=8000,
                       help='port to listen on (default: 8000)')
 
-    parser.add_option('-s', '--source', default='content',
-                      help='directory with a source (default: content)')
-    parser.add_option('-d', '--dest', default='deploy',
-                      help='destination directory (default: deploy)')
+    parser.add_option('-d', '--dest', default='',
+        help='destination directory (default: _build in source dir)')
 
     opts, args = parser.parse_args()
 
-    if len(args):
+    source = op.abspath(args and args[0] or '.')
+    if not op.exists(op.join(source, 'settings.cfg')):
+        print 'Error: no settings.cfg in current folder'
+        print
         parser.print_help()
-        sys.exit()
+        sys.exit(0)
+    dest = opts.dest and opts.dest or op.join(source, '_build')
 
     if opts.verbose:
         level = logging.DEBUG
@@ -49,9 +51,9 @@ def main():
         logging.basicConfig(filename=opts.log, level=level)
 
     if opts.webserve:
-        start_server(opts.address, opts.port, op.abspath(opts.dest))
+        start_server(opts.address, opts.port, dest)
     else:
-        site = Site(op.abspath(opts.source), op.abspath(opts.dest))
+        site = Site(source, dest)
         site.render()
 
 if __name__ == '__main__':
