@@ -18,7 +18,9 @@
     <title type="html">{{ post.title|e }}</title>
     <updated>{{ post.mtime|rfc3339 }}</updated>
     <published>{{ post.date|rfc3339 }}</published>
-    <!-- <category term="blog"></category> -->
+    {% for tag in post.tags -%}
+    <category term="{{ tag }}"></category>
+    {%- endfor %}
     <link href="{{ post.get_absolute_url() }}" rel="alternate"></link>
     <content type="html">{{ post.body|e }}</content>
   </entry>
