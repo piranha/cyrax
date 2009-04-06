@@ -56,7 +56,10 @@ class Site(object):
             if (not relative.startswith('static') and
                 not any(map(ishidden, path.split(op.sep)))):
                 for f in files:
-                    if f != 'settings.cfg' and not ishidden(f):
+                    if (f != 'settings.cfg' and
+                        not ishidden(f) and
+                        op.join(relative, f) not in self.settings.get('exclude',
+                                                                      [])):
                         self.add_page(op.join(relative, f))
         events.emit('site-traversed', site=self)
 
