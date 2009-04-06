@@ -25,7 +25,7 @@ Get the cyrax by either cloning repository_ or downloading an archive_.
 Usage
 ~~~~~
 
-Run ``./main.py``.
+Run ``./cyrax``.
 
 
 .. Jinja2: http://jinja.pocoo.org/2/
