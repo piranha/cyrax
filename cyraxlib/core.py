@@ -162,4 +162,4 @@ class Entry(BaseEntry):
         logger.info('Rendering %s' % self)
         path = self.get_dest()
         makedirs(op.dirname(path))
-        file(path, 'w').write(self.template.render())
+        file(path, 'w').write(self.template.render().encode('utf-8'))
