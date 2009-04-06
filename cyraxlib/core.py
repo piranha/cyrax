@@ -54,7 +54,7 @@ class Site(object):
         for path, _, files in os.walk(self.root):
             relative = path[len(self.root):].lstrip(os.sep)
             if (not relative.startswith('static') and
-                not ishidden(op.basename(path))):
+                not any(map(ishidden, path.split(op.sep)))):
                 for f in files:
                     if f != 'settings.cfg' and not ishidden(f):
                         self.add_page(op.join(relative, f))
