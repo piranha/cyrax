@@ -23,6 +23,7 @@ class Post(object):
             self.site.posts = []
         self.site.posts.append(self)
         self.site.posts.sort(key=lambda x: x.date, reverse=True)
+        self.site.latest_post = self.site.posts[0]
 
         if 'tags' in self.settings:
             for tag in self.settings.tags:
