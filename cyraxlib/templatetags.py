@@ -10,7 +10,10 @@ class MetaInfoExtension(Extension):
         lineno = token.lineno
 
         meta = parser.parse_statements(['name:endmeta'], drop_needle=True)
-        config = meta[0].nodes[0].data
+        try:
+            config = meta[0].nodes[0].data
+        except IndexError:
+            config = '' # there was no data
 
         args = [nodes.Name('entry', 'load'), nodes.Const(config)]
 
