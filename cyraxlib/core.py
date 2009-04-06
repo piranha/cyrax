@@ -108,8 +108,12 @@ class Entry(BaseEntry):
         self.settings = Settings(parent=self.site.settings)
         self.template = site.env.get_template(source or path,
                                               globals={'entry': self})
+        self._type_determined = False
         self.collect()
+        if not self._type_determined:
+            self._determine_type()
 
+    def _determine_type(self):
         # Determine type
         if 'type' in self.settings:
             try:
@@ -139,8 +143,10 @@ class Entry(BaseEntry):
         if op.exists(op.join(self.site.root, base)):
             self.settings.parent_tmpl = base
 
+        self._type_determined = True
+
     def __repr__(self):
-        type = self.settings.get('type').capitalize() or 'Entry'
+        type = self.settings.get('type', '').capitalize() or 'Entry'
         return '<%s: %r>' % (type, self.path)
 
     def __getitem__(self, name):

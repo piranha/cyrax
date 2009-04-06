@@ -30,6 +30,7 @@ class MetaInfoExtension(Extension):
 
     def _update_entry(self, entry, config, caller):
         entry.settings.read(config)
+        entry._determine_type()
         # TODO: Remove me when Jinja2 will be fixed
         return ''
 
