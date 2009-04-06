@@ -16,6 +16,9 @@ def makedirs(path):
     except OSError:
         pass
 
+def ishidden(name):
+    return name.startswith('.') or name.startswith('_')
+
 
 class Site(object):
     def __init__(self, root, dest):
@@ -50,9 +53,10 @@ class Site(object):
     def _traverse(self):
         for path, _, files in os.walk(self.root):
             relative = path[len(self.root):].lstrip(os.sep)
-            if not relative.startswith('static'):
+            if (not relative.startswith('static') and
+                not ishidden(op.basename(path))):
                 for f in files:
-                    if not f.startswith('_') and not f == 'settings.cfg':
+                    if f != 'settings.cfg' and not ishidden(f):
                         self.add_page(op.join(relative, f))
         events.emit('site-traversed', site=self)
 
