@@ -28,8 +28,8 @@ Usage
 Run ``./cyrax``.
 
 
-.. Jinja2: http://jinja.pocoo.org/2/
-.. Jekyll: http://github.com/mojombo/jekyll/
-.. Hyde: http://github.com/lakshmivyas/hyde/
-.. repository: http://hg.piranha.org.ua/cyrax/
-.. archive: http://hg.piranha.org.ua/cyrax/archive/tip.tar.gz
+.. _Jinja2: http://jinja.pocoo.org/2/
+.. _Jekyll: http://github.com/mojombo/jekyll/
+.. _Hyde: http://github.com/lakshmivyas/hyde/
+.. _repository: http://hg.piranha.org.ua/cyrax/
+.. _archive: http://hg.piranha.org.ua/cyrax/archive/tip.tar.gz
