@@ -3,7 +3,7 @@ from jinja2 import Environment, FileSystemLoader, Undefined
 from cyraxlib import typogrify, templatefilters, templatetags
 
 
-class LoyalUnderfined(Undefined):
+class LoyalUndefined(Undefined):
     def __getattr__(self, name):
         return self
 
@@ -19,7 +19,7 @@ def initialize_env(source):
     '''
     loader = FileSystemLoader(source)
 
-    env = Environment(loader=loader, undefined=LoyalUnderfined,
+    env = Environment(loader=loader, undefined=LoyalUndefined,
                       extensions=[templatetags.MetaInfoExtension,
                                   templatetags.MarkExtension])
 
