@@ -21,8 +21,10 @@ def rst(value):
     except ImportError:
         raise jinja2.TemplateError('docutils are not installed!')
 
-    parts = docutils.core.publish_parts(source=value, writer_name='html')
-    return parts['html_body']
+    settings = {'footnote_references': 'superscript'}
+    parts = docutils.core.publish_parts(source=value, writer_name='html',
+                                        settings_overrides=settings)
+    return parts['fragment']
 
 
 def textile(value):
