@@ -60,7 +60,7 @@ class Site(object):
                         not ishidden(f) and
                         op.join(relative, f) not in self.settings.get('exclude',
                                                                       [])):
-                        self.add_page(op.join(relative, f))
+                        self.add_page(op.join(relative, f).replace('\\', '/'))
         events.emit('site-traversed', site=self)
 
     def add_page(self, path):
