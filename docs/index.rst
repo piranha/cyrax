@@ -25,14 +25,14 @@ Cyrax depends on Jinja2 template library, you should either install it as your
 distribution prefers (it's present in most of major distributions, particularly
 in Debian and MacPorts), or use ``easy_install``::
 
-   sudo easy_install jinja2
+   pip install jinja2
 
 Get the cyrax by either cloning repository_ or downloading an archive_.
 
 If you want to use built-in webserver, you could also install CherryPy 3, either
 by your distribution tools or by ``easy_install``::
 
-   sudo easy_install CherryPy
+   pip install CherryPy
 
 .. _repository: http://hg.piranha.org.ua/cyrax/
 .. _archive: http://hg.piranha.org.ua/cyrax/archive/tip.tar.gz

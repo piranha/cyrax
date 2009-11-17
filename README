@@ -16,20 +16,23 @@ Installation
 
 Cyrax depends on Jinja2 template library, you should either install it as your
 distribution prefers (it's present in most of major distributions, particularly
-in Debian and MacPorts), or use ``easy_install``::
+in Debian and MacPorts), or use ``easy_install`` or ``pip``::
 
-   sudo easy_install jinja2
+   pip install jinja2
 
-Get the cyrax by either cloning repository_ or downloading an archive_.
+Then get cyrax by either cloning repository_ or installing by package manager::
+
+   pip install cyrax
 
 Usage
 ~~~~~
 
-Run ``./cyrax``.
-
+Read some docs_, run ``cyrax --help`` to read about command line options, look
+at example_.
 
 .. _Jinja2: http://jinja.pocoo.org/2/
 .. _Jekyll: http://github.com/mojombo/jekyll/
 .. _Hyde: http://github.com/lakshmivyas/hyde/
 .. _repository: http://hg.piranha.org.ua/cyrax/
-.. _archive: http://hg.piranha.org.ua/cyrax/archive/tip.tar.gz
+.. _docs: http://hg.piranha.org.ua/cyrax/docs/
+.. _example: http://hg.piranha.org.ua/cyrax/file/tip/content/
