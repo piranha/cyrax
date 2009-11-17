@@ -48,7 +48,7 @@ class Site(object):
         try:
             return self.settings[name]
         except KeyError, e:
-            raise AttributeError(e.message)
+            raise AttributeError(str(e))
 
     def _traverse(self):
         for path, _, files in os.walk(self.root):
