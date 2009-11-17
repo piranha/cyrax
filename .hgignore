@@ -1,3 +1,6 @@
 ^content/_build
 ^docs/_build
 \.pyc$
+^MANIFEST$
+^dist/
+^build/
