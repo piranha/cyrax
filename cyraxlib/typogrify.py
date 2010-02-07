@@ -212,7 +212,7 @@ def typogrify(text):
     text = caps(text)
     text = initial_quotes(text)
     text = mdash(text)
-    return text
+    return jinja2.Markup(text)
 
 def widont(text):
     """Replaces the space between the last two words in a string with ``&nbsp;``

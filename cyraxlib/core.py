@@ -134,7 +134,7 @@ class Entry(BaseEntry):
                     break
 
         if not Type:
-            logger.info("Can't determine type for %s" % self)
+            logger.info("Can't determine type for %s" % self.get_url())
             return
 
         self.__class__ = new_base(self, Type)
@@ -162,7 +162,7 @@ class Entry(BaseEntry):
             raise AttributeError
 
     def get_dest(self):
-        return op.join(self.site.dest, self.get_url())
+        return op.join(self.site.dest, self.get_url(), 'index.html')
 
     def collect(self):
         # some parameters are determined at render time
@@ -172,7 +172,7 @@ class Entry(BaseEntry):
         return self.site.settings.url + self.get_url()
 
     def render(self):
-        logger.info('Rendering %s' % self)
+        logger.info('Rendering %s' % self.get_absolute_url())
         path = self.get_dest()
         makedirs(op.dirname(path))
         file(path, 'w').write(self.template.render().encode('utf-8'))
