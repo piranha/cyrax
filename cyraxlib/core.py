@@ -173,6 +173,9 @@ class Entry(BaseEntry):
 
     def render(self):
         logger.info('Rendering %s' % self.get_absolute_url())
+        # workaround for a dumb bug
+        # no ideas why but all tag templates contain same self inside
+        self.template.globals['entry'] = self
         path = self.get_dest()
         makedirs(op.dirname(path))
         file(path, 'w').write(self.template.render().encode('utf-8'))

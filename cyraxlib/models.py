@@ -25,9 +25,10 @@ class Post(object):
         self.site.posts.sort(key=lambda x: x.date, reverse=True)
         self.site.latest_post = self.site.posts[0]
 
-        if 'tags' in self.settings:
-            for tag in self.settings.tags:
-                self.site.tags.setdefault(tag, []).append(self)
+        for tag in self.settings.get('tags', []):
+            tagentries = self.site.tags.setdefault(tag, [])
+            if self not in tagentries:
+                tagentries.append(self)
                 self.site.tags[tag].sort(key=lambda x: x.date, reverse=True)
 
     def __str__(self):
