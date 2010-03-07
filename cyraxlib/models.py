@@ -77,6 +77,8 @@ class Tag(object):
         return self.slug
 
     def get_url(self):
+        if self.path.endswith('.html'):
+            return self.path[:-len('.html')]
         return self.path
 
 
