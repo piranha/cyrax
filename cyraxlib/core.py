@@ -37,7 +37,7 @@ class Site(object):
         self.settings = Settings(parent_tmpl='_base.html')
         conf = op.join(self.root, 'settings.cfg')
         if op.exists(conf):
-            self.settings.read(file(conf).read())
+            self.settings.read(file(conf).read().decode('utf-8'))
 
         self.env = initialize_env(root)
         self.env.globals['site'] = self
