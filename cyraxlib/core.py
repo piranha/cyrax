@@ -1,5 +1,6 @@
 import os, shutil, logging, datetime, time
 import os.path as op
+import sys
 
 from cyraxlib.conf import Settings
 from cyraxlib.env import initialize_env
@@ -19,6 +20,12 @@ def makedirs(path):
 def ishidden(name):
     return name.startswith('.') or name.startswith('_')
 
+def impcallback(relpath, root):
+    if not root in sys.path:
+        sys.path.insert(0, root)
+    modname, cbname = relpath.rsplit('.', 1)
+    mod = __import__(modname, {}, {}, [1])
+    return getattr(mod, cbname)
 
 class Site(object):
     def __init__(self, root, dest):
@@ -37,6 +44,10 @@ class Site(object):
         self.entries = []
         self.tags = {}
         self._traverse()
+
+        if self.settings.get('sitecallback'):
+            callback = impcallback(self.settings.sitecallback, self.root)
+            callback(self)
 
     def __repr__(self):
         return '<Site: %r>' % self.root
