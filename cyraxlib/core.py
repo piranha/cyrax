@@ -43,11 +43,12 @@ class Site(object):
         self.env.globals['site'] = self
         self.entries = []
         self.tags = {}
-        self._traverse()
 
         if self.settings.get('sitecallback'):
             callback = impcallback(self.settings.sitecallback, self.root)
             callback(self)
+
+        self._traverse()
 
     def __repr__(self):
         return '<Site: %r>' % self.root
