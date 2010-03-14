@@ -5,6 +5,10 @@ from cyraxlib.events import events
 
 DATE_RE = re.compile(r'(.*?)(\d+)[/-](\d+)[/-](\d+)[/-](.*)$')
 
+def postcmp(x, y):
+    xd = x.settings.get('updated', x.settings.date)
+    yd = y.settings.get('updated', y.settings.date)
+    return -1 if xd < yd else 1 if xd > yd else 0
 
 class Post(object):
     @staticmethod
@@ -15,21 +19,21 @@ class Post(object):
 
     def __init__(self):
         base, Y, M, D, slug = DATE_RE.search(self.path).groups()
-        self.settings.date = datetime.date(int(Y), int(M), int(D))
+        self.settings.date = datetime.datetime(int(Y), int(M), int(D))
         self.settings.base = base
         self.settings.slug = op.splitext(slug)[0]
 
         if not hasattr(self.site, 'posts'):
             self.site.posts = []
         self.site.posts.append(self)
-        self.site.posts.sort(key=lambda x: x.date, reverse=True)
+        self.site.posts.sort(cmp=postcmp, reverse=True)
         self.site.latest_post = self.site.posts[0]
 
         for tag in self.settings.get('tags', []):
             tagentries = self.site.tags.setdefault(tag, [])
             if self not in tagentries:
                 tagentries.append(self)
-                self.site.tags[tag].sort(key=lambda x: x.date, reverse=True)
+                self.site.tags[tag].sort(cmp=postcmp, reverse=True)
 
     def __str__(self):
         return self.slug

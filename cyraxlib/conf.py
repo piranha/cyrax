@@ -6,10 +6,12 @@ Format:
   key: value
   key: [list, of, values]
   key: {key: value, key: value}
+  key: date: yyyy-mm-dd HH:MM:SS
 
 Any line without a ":" is simply skipped.
 '''
 
+from datetime import datetime
 
 def parse(data):
     result = {}
@@ -28,7 +30,10 @@ def parse_line(line):
     if s('[') and e(']'):
         value = strip(value[1:-1].split(','))
     elif s('{') and e('}'):
-        value = dict(strip(x.split(':')) for x in value.split(','))
+        value = dict(strip(x.split(':')) for x in value[1:-1].split(','))
+    elif s('date:'):
+        value = datetime.strptime(value[len('date:'):].strip(),
+                                  '%Y-%m-%d %H:%M:%S')
     return key, value
 
 
