@@ -66,7 +66,7 @@ class Site(object):
         for path, _, files in os.walk(self.root):
             relative = path[len(self.root):].lstrip(os.sep)
             if (not relative.startswith('static') and
-                not any(map(ishidden, path.split(op.sep)))):
+                not any(map(ishidden, relative.split(op.sep)))):
                 for f in files:
                     if (f != 'settings.cfg' and
                         not ishidden(f) and
