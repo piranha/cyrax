@@ -23,7 +23,7 @@ def main():
                       help='start server instead of site generation')
     parser.add_option('-a', '--address', default='0.0.0.0',
                       help='address to listen on (default: all interfaces)')
-    parser.add_option('-p', '--port', default=8000,
+    parser.add_option('-p', '--port', default=8000, type='int',
                       help='port to listen on (default: 8000)')
 
     parser.add_option('-d', '--dest', default='',
