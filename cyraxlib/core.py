@@ -173,8 +173,14 @@ class Entry(BaseEntry):
         except KeyError:
             raise AttributeError
 
+    def isdir(self):
+        return self.settings.get('isdir', True)
+
     def get_dest(self):
-        return op.join(self.site.dest, self.get_url(), 'index.html')
+        path = op.join(self.site.dest, self.get_url())
+        if self.isdir():
+            path = op.join(path, 'index.html')
+        return path
 
     def collect(self):
         # some parameters are determined at render time

@@ -67,6 +67,8 @@ class Page(object):
 
     def get_url(self):
         url = op.join(self.base, self.slug)
+        if self.isdir():
+            url += '/'
         return url
 
 
@@ -84,9 +86,12 @@ class Tag(object):
 
     def get_url(self):
         if self.path.endswith('.html'):
-            return self.path[:-len('.html')]
-        return self.path
-
+            url = self.path[:-len('.html')]
+        else:
+            url = self.path
+        if self.isdir():
+            url += '/'
+        return url
 
 def add_taglist_entries(site):
     from cyraxlib.core import Entry

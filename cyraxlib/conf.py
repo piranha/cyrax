@@ -7,6 +7,8 @@ Format:
   key: [list, of, values]
   key: {key: value, key: value}
   key: date: yyyy-mm-dd HH:MM:SS
+  key: True  # boolean value
+  key: False # boolean value
 
 Any line without a ":" is simply skipped.
 '''
@@ -34,6 +36,10 @@ def parse_line(line):
     elif s('date:'):
         value = datetime.strptime(value[len('date:'):].strip(),
                                   '%Y-%m-%d %H:%M:%S')
+    elif value == 'True':
+        value = True
+    elif value == 'False':
+        value = False
     return key, value
 
 
