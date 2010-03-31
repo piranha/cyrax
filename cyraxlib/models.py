@@ -67,7 +67,7 @@ class Page(object):
 
     def get_url(self):
         url = op.join(self.base, self.slug)
-        if self.isdir() and url:
+        if self.isdir() and url and not url.endswith('/'):
             url += '/'
         return url
 
