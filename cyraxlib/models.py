@@ -50,10 +50,11 @@ class Page(object):
         return True
 
     def __init__(self):
-        if self.path.endswith('index.html'):
-            self.path = self.path[:-len('index.html')]
-        elif self.path.endswith('.html'):
-            self.path = self.path[:-len('.html')]
+        if self.isdir():
+            if self.path.endswith('index.html'):
+                self.path = self.path[:-len('index.html')]
+            elif self.path.endswith('.html'):
+                self.path = self.path[:-len('.html')]
         base, slug = op.split(self.path)
         self.settings.base = base
         self.settings.slug = slug
