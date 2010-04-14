@@ -152,11 +152,11 @@ class Entry(BaseEntry):
         self.__class__ = new_base(self, Type)
         self.settings.type = Type.__name__.lower()
 
-        super(self.__class__, self).__init__()
-
         base = '_%s.html' % self.settings.type
         if op.exists(op.join(self.site.root, base)):
             self.settings.parent_tmpl = base
+
+        super(self.__class__, self).__init__()
 
         self._type_determined = True
 
