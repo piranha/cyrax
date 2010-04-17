@@ -1,7 +1,10 @@
 import re, datetime
+import posixpath
 import os.path as op
 
+
 from cyraxlib.events import events
+from cyraxlib.utils import path2url
 
 DATE_RE = re.compile(r'(.*?)(\d+)[/-](\d+)[/-](\d+)[/-](.*)$')
 
@@ -40,7 +43,7 @@ class Post(object):
 
     def get_url(self):
         date = self.date.strftime('%Y/%m/%d')
-        url = op.join(self.base, date, self.slug) + '/'
+        url = posixpath.join(self.base, date, self.slug) + '/'
         return url
 
 
@@ -67,19 +70,23 @@ class Page(object):
         return self.slug
 
     def get_url(self):
-        url = op.join(self.base, self.slug)
+        url = posixpath.join(self.base, self.slug)
         if self.isdir() and url and not url.endswith('/'):
             url += '/'
         return url
 
 
 class Tag(object):
-    @staticmethod
-    def check(entry):
-        return entry.path.startswith('tag/')
+
+    prefix = 'tag' + op.sep
+
+    @classmethod
+    def check(cls, entry):
+        res = entry.path.startswith(cls.prefix)
+        return res
 
     def __init__(self):
-        self.slug = self.path[len('tag/'):-len('.html')]
+        self.slug = self.path[len(self.prefix):-len('.html')]
         self.site.tag_cache[self.slug] = self
 
     def __str__(self):
@@ -87,9 +94,9 @@ class Tag(object):
 
     def get_url(self):
         if self.path.endswith('.html'):
-            url = self.path[:-len('.html')]
+            url = path2url(self.path[:-len('.html')])
         else:
-            url = self.path
+            url = path2url(self.path)
         if self.isdir():
             url += '/'
         return url
@@ -98,7 +105,8 @@ def add_taglist_entries(site):
     from cyraxlib.core import Entry
     site.tag_cache = {}
     for tag in site.tags:
-        site.entries.append(Entry(site, 'tag/%s.html' % tag, '_taglist.html'))
+        path = '%s%s.html' % (Tag.prefix, tag)
+        site.entries.append(Entry(site, path, '_taglist.html'))
 
 events.connect('site-traversed', add_taglist_entries)
 

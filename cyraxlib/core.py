@@ -4,7 +4,7 @@ import sys
 
 from cyraxlib.conf import Settings
 from cyraxlib.env import initialize_env
-from cyraxlib.utils import new_base
+from cyraxlib.utils import new_base, safe_url_join, url2path
 from cyraxlib.models import TYPE_LIST
 from cyraxlib.events import events
 
@@ -177,7 +177,7 @@ class Entry(BaseEntry):
         return self.settings.get('isdir', True)
 
     def get_dest(self):
-        path = op.join(self.site.dest, self.get_url())
+        path = op.join(self.site.dest, url2path(self.get_url()))
         if self.isdir():
             path = op.join(path, 'index.html')
         return path
@@ -187,7 +187,7 @@ class Entry(BaseEntry):
         self.template.render()
 
     def get_absolute_url(self):
-        return self.site.settings.url + self.get_url()
+        return safe_url_join(self.site.settings.url, self.get_url())
 
     def render(self):
         logger.info('Rendering %s' % self.get_absolute_url())
