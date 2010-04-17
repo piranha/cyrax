@@ -20,8 +20,8 @@ def main():
                       help='output more logs')
 
     parser.add_option('-w', '--webserve', default=False, action='store_true',
-                      help='start server instead of site generation')
-    parser.add_option('-a', '--address', default='0.0.0.0',
+                      help='start local web server')
+    parser.add_option('-a', '--address', default='127.0.0.1',
                       help='address to listen on (default: all interfaces)')
     parser.add_option('-p', '--port', default=8000, type='int',
                       help='port to listen on (default: 8000)')
@@ -51,7 +51,7 @@ def main():
         logging.basicConfig(filename=opts.log, level=level)
 
     if opts.webserve:
-        start_server(opts.address, opts.port, dest)
+        start_server(opts.address, opts.port, source, dest)
     else:
         site = Site(source, dest)
         site.render()
