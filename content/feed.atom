@@ -6,7 +6,7 @@
 {% block content -%}
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:thr="http://purl.org/syndication/thread/1.0">
-  <id>{{ site.base }}{{ site.url }}</id>
+  <id>{{ site.url }}</id>
   <title>{{ site.title }}</title>
   {% if site.latest_post -%}
   <updated>{{ site.latest_post.mtime|rfc3339 }}</updated>
@@ -14,7 +14,7 @@
   <author>
     <name>{{ site.author }}</name>
   </author>
-  <link href="{{ site.base }}{{ site.url }}" rel="alternate"></link>
+  <link href="{{ site.url }}" rel="alternate"></link>
   <generator uri="http://hg.piranha.org.ua/cyrax/">cyrax</generator>
 
 {%- for post in site.posts[:5] %}
@@ -26,7 +26,7 @@
     {% for tag in post.tags -%}
     <category term="{{ tag }}"></category>
     {%- endfor %}
-    <link href="{{ site.base }}{{ post.get_absolute_url() }}" rel="alternate"></link>
+    <link href="{{ post.get_absolute_url() }}" rel="alternate"></link>
     <content type="html">{{ post.body|e }}</content>
   </entry>
 {% endfor %}
