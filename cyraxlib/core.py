@@ -4,7 +4,7 @@ import sys
 
 from cyraxlib.conf import Settings
 from cyraxlib.env import initialize_env
-from cyraxlib.utils import new_base, safe_url_join, url2path
+from cyraxlib.utils import new_base, safe_url_join, url2path, get_base_path
 from cyraxlib.models import TYPE_LIST
 from cyraxlib.events import events
 
@@ -30,7 +30,6 @@ def impcallback(relpath, root):
 class Site(object):
     def __init__(self, root, dest):
         self.root = root
-        self.dest = dest
         if op.exists(dest):
             shutil.rmtree(dest)
 
@@ -38,6 +37,9 @@ class Site(object):
         conf = op.join(self.root, 'settings.cfg')
         if op.exists(conf):
             self.settings.read(file(conf).read().decode('utf-8'))
+        
+        site_base_path = get_base_path(getattr(self.settings, 'url', '/'))
+        self.dest = op.join(dest, url2path(site_base_path[1:]))
 
         self.env = initialize_env(root)
         self.env.globals['site'] = self
@@ -93,7 +95,7 @@ class Site(object):
 
 class BaseEntry(object):
     'Class, used in collection phase, when type is not determined yet'
-    def get_url(self):
+    def get_relative_url(self):
         return ''
 
 class Entry(BaseEntry):
@@ -146,7 +148,7 @@ class Entry(BaseEntry):
                     break
 
         if not Type:
-            logger.info("Can't determine type for %s" % self.get_url())
+            logger.info("Can't determine type for %s" % self.get_relative_url())
             return
 
         self.__class__ = new_base(self, Type)
@@ -177,7 +179,7 @@ class Entry(BaseEntry):
         return self.settings.get('isdir', True)
 
     def get_dest(self):
-        path = op.join(self.site.dest, url2path(self.get_url()))
+        path = op.join(self.site.dest, url2path(self.get_relative_url()))
         if self.isdir():
             path = op.join(path, 'index.html')
         return path
@@ -186,8 +188,19 @@ class Entry(BaseEntry):
         # some parameters are determined at render time
         self.template.render()
 
+    def _get_url(self, absolute=False):
+        if absolute:
+            base = self.site.settings.url
+        else:
+            base = get_base_path(self.site.settings.url)
+        return safe_url_join(base, self.get_relative_url())
+
+
+    def get_url(self):
+        return self._get_url(absolute=False)
+
     def get_absolute_url(self):
-        return safe_url_join(self.site.settings.url, self.get_url())
+        return self._get_url(absolute=True)
 
     def render(self):
         logger.info('Rendering %s' % self.get_absolute_url())

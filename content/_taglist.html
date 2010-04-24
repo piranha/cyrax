@@ -9,7 +9,7 @@
   {% for post in site.tags[entry.slug] %}
   <tr>
     <td class="date">{{ post.date.strftime('%Y, %B %d') }}</td>
-    <td class="title"><a href="{{ post.get_absolute_url() }}">{{ post.title }}</a></td>
+    <td class="title"><a href="{{ post.get_url() }}">{{ post.title }}</a></td>
     <td class="tagline">{{ post.tagline }}</td>
   </tr>
   {% endfor %}

@@ -1,6 +1,6 @@
 from jinja2 import Environment, FileSystemLoader, Undefined
 
-from cyraxlib import typogrify, templatefilters, templatetags
+from cyraxlib import typogrify, templatefilters, templatetags, templatefunctions
 
 
 class LoyalUndefined(Undefined):
@@ -27,5 +27,6 @@ def initialize_env(source):
     env.filters.update(filters)
     filters = dict((f.__name__, f) for f in templatefilters.filters)
     env.filters.update(filters)
-
+    functions = dict((f.__name__, f) for f in templatefunctions.functions)
+    env.globals.update(functions)
     return env

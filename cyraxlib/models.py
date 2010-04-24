@@ -41,7 +41,7 @@ class Post(object):
     def __str__(self):
         return self.slug
 
-    def get_url(self):
+    def get_relative_url(self):
         date = self.date.strftime('%Y/%m/%d')
         url = posixpath.join(self.base, date, self.slug) + '/'
         return url
@@ -69,7 +69,7 @@ class Page(object):
     def __str__(self):
         return self.slug
 
-    def get_url(self):
+    def get_relative_url(self):
         url = posixpath.join(self.base, self.slug)
         if self.isdir() and url and not url.endswith('/'):
             url += '/'
@@ -92,7 +92,7 @@ class Tag(object):
     def __str__(self):
         return self.slug
 
-    def get_url(self):
+    def get_relative_url(self):
         if self.path.endswith('.html'):
             url = path2url(self.path[:-len('.html')])
         else:

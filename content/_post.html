@@ -10,7 +10,7 @@ Published: {{ entry.date.strftime('%Y, %B %d') }}<br />
 
 {% if entry.tags %}
 Tags: {% for tag in entry.tags -%}
-<a href="{{ site.tag_cache.get(tag).get_absolute_url() }}">{{ tag }}</a>
+<a href="{{ site.tag_cache.get(tag).get_url() }}">{{ tag }}</a>
 {%- if not loop.last %}, {% endif -%}
 {%- endfor %}
 {% endif %}
