@@ -127,10 +127,11 @@ class Entry(BaseEntry):
                                               globals={'entry': self})
         self._type_determined = False
         self.collect()
-        if not self._type_determined:
-            self._determine_type()
+        self._determine_type()
 
     def _determine_type(self):
+        if self._type_determined:
+            return
         # Determine type
         if 'type' in self.settings:
             try:
