@@ -16,6 +16,7 @@ setup(name='cyrax',
       url = 'http://hg.piranha.org.ua/cyrax/',
       packages = ['cyraxlib'],
       scripts = ['cyrax'],
+      install_required=['Jinja2'],
       classifiers = [
         'Development Status :: 4 - Beta',
         'Environment :: Console',
