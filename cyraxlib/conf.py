@@ -65,8 +65,10 @@ class Settings(dict):
             raise
 
     def __getattr__(self, name):
-        return self[name]
+        try:
+            return self[name]
+        except KeyError, e:
+            raise AttributeError(str(e))
 
     def __setattr__(self, name, value):
         self[name] = value
-
