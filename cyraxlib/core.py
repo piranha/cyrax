@@ -38,7 +38,7 @@ class Site(object):
         if op.exists(conf):
             self.settings.read(file(conf).read().decode('utf-8'))
         
-        site_base_path = get_base_path(getattr(self.settings, 'url', '/'))
+        site_base_path = get_base_path(self.url)
         self.dest = op.join(dest, url2path(site_base_path[1:]))
 
         self.env = initialize_env(root)
@@ -51,6 +51,10 @@ class Site(object):
             callback(self)
 
         self._traverse()
+
+    @property
+    def url(self):
+        return getattr(self.settings, 'url', '/')
 
     def __repr__(self):
         return '<Site: %r>' % self.root
@@ -191,11 +195,10 @@ class Entry(BaseEntry):
 
     def _get_url(self, absolute=False):
         if absolute:
-            base = self.site.settings.url
+            base = self.site.url
         else:
-            base = get_base_path(self.site.settings.url)
+            base = get_base_path(self.site.url)
         return safe_url_join(base, self.get_relative_url())
-
 
     def get_url(self):
         return self._get_url(absolute=False)
