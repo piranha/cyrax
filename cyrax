@@ -31,14 +31,6 @@ def main():
 
     opts, args = parser.parse_args()
 
-    source = op.abspath(args and args[0] or '.')
-    if not op.exists(op.join(source, 'settings.cfg')):
-        print 'Error: no settings.cfg in current folder'
-        print
-        parser.print_help()
-        sys.exit(0)
-    dest = opts.dest and opts.dest or op.join(source, '_build')
-
     if opts.verbose:
         level = logging.DEBUG
     elif opts.quiet:
@@ -49,6 +41,12 @@ def main():
         logging.basicConfig(stream=sys.stdout, level=level)
     else:
         logging.basicConfig(filename=opts.log, level=level)
+
+    source = op.abspath(args and args[0] or '.')
+    if not op.exists(op.join(source, 'settings.cfg')):
+        logging.warn("Can't find settings.cfg in the current folder")
+
+    dest = opts.dest and opts.dest or op.join(source, '_build')
 
     if opts.webserve:
         start_server(opts.address, opts.port, source, dest)
