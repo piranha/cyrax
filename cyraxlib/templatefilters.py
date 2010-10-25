@@ -21,6 +21,11 @@ def rst(value):
     except ImportError:
         raise jinja2.TemplateError('docutils are not installed!')
 
+    try:
+        import cyraxlib.highlight.rst
+    except ImportError:
+        pass # Pygments not installed
+
     settings = {'footnote_references': 'superscript'}
     parts = docutils.core.publish_parts(source=value, writer_name='html',
                                         settings_overrides=settings)
