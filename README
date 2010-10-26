@@ -16,13 +16,15 @@ Installation
 
 Cyrax depends on Jinja2 template library, you should either install it as your
 distribution prefers (it's present in most of major distributions, particularly
-in Debian and MacPorts), or use ``easy_install`` or ``pip``::
-
-   pip install jinja2
-
-Then get cyrax by either cloning repository_ or installing by package manager::
+in Debian and MacPorts) or rely on ``pip`` (it will download Jinja2 if not
+present when installing cyrax). Then get cyrax by either installing latest
+release from PyPI::
 
    pip install cyrax
+
+or development version from repository::
+
+   pip install hg+http://hg.piranha.org.ua/cyrax/#egg=cyrax
 
 Usage
 ~~~~~
