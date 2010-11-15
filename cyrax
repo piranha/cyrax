@@ -44,7 +44,8 @@ def main():
 
     source = op.abspath(args and args[0] or '.')
     if not op.exists(op.join(source, 'settings.cfg')):
-        logging.warn("Can't find settings.cfg in the current folder")
+        logging.error("Can't find settings.cfg in the current folder")
+        sys.exit(1)
 
     dest = opts.dest and opts.dest or op.join(source, '_build')
 
