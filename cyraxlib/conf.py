@@ -25,6 +25,8 @@ def parse(data):
             pass
     return result
 
+def parse_date(date):
+    return datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
 
 def parse_line(line):
     key, value = strip(line.split(':', 1))
@@ -33,10 +35,11 @@ def parse_line(line):
         value = strip(value[1:-1].split(','))
     elif s('{') and e('}'):
         value = dict(strip(x.split(':')) for x in value[1:-1].split(','))
-    elif s('date:') or key.strip() == 'date':
+    elif s('date:'):
+        value = parse_date(value[len('date:'):].strip())
+    elif key.strip() == 'date':
         try:
-            value = datetime.strptime(value[len('date:'):].strip(),
-                                      '%Y-%m-%d %H:%M:%S')
+            value = parse_date(value)
         except ValueError:
             pass
     elif value == 'True':
