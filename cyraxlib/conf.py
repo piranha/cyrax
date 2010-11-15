@@ -33,9 +33,12 @@ def parse_line(line):
         value = strip(value[1:-1].split(','))
     elif s('{') and e('}'):
         value = dict(strip(x.split(':')) for x in value[1:-1].split(','))
-    elif s('date:'):
-        value = datetime.strptime(value[len('date:'):].strip(),
-                                  '%Y-%m-%d %H:%M:%S')
+    elif s('date:') or key.strip() == 'date':
+        try:
+            value = datetime.strptime(value[len('date:'):].strip(),
+                                      '%Y-%m-%d %H:%M:%S')
+        except ValueError:
+            pass
     elif value == 'True':
         value = True
     elif value == 'False':

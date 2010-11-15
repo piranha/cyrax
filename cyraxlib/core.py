@@ -37,7 +37,7 @@ class Site(object):
         conf = op.join(self.root, 'settings.cfg')
         if op.exists(conf):
             self.settings.read(file(conf).read().decode('utf-8'))
-        
+
         site_base_path = get_base_path(self.url)
         self.dest = op.join(dest, url2path(site_base_path[1:]))
 
