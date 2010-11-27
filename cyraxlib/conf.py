@@ -10,23 +10,25 @@ Format:
   key: True  # boolean value
   key: False # boolean value
 
-Any line without a ":" is simply skipped.
+Any line without a ":" is simply skipped. Field with a key of ``date`` are
+special case and are checked to contain date value.
 '''
 
 from datetime import datetime
 
+
 def parse(data):
     result = {}
     for line in data.splitlines():
-        try:
+        if ':' in line:
             key, value = parse_line(line)
             result[key] = value
-        except ValueError:
-            pass
     return result
+
 
 def parse_date(date):
     return datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+
 
 def parse_line(line):
     key, value = strip(line.split(':', 1))
@@ -42,9 +44,9 @@ def parse_line(line):
             value = parse_date(value)
         except ValueError:
             pass
-    elif value == 'True':
+    elif value.lower() in 'true yes on'.split():
         value = True
-    elif value == 'False':
+    elif value.lower() in 'false no off'.split():
         value = False
     return key, value
 
