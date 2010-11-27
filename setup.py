@@ -6,8 +6,8 @@ from setuptools import setup
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-setup(name='cyrax',
-      description='Static site generator',
+setup(name = 'cyrax',
+      description = 'Static site generator',
       long_description = read('README'),
       license = 'BSD',
       version = '0.1.18',
@@ -16,9 +16,8 @@ setup(name='cyrax',
       url = 'http://hg.piranha.org.ua/cyrax/',
       packages = ['cyraxlib'],
       scripts = ['cyrax'],
-      install_required=['Jinja2'],
+      install_requires = ['Jinja2'],
       classifiers = [
-        'Development Status :: 4 - Beta',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
