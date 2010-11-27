@@ -1,8 +1,8 @@
 .. _index:
 
-=====================
- Cyrax documentation
-=====================
+=======
+ Cyrax
+=======
 
 What's Cyrax?
 -------------
@@ -49,12 +49,4 @@ Contents:
 
    formats
    usage
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 

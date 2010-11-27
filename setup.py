@@ -6,11 +6,13 @@ from setuptools import setup
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+import cyraxlib
+
 setup(name = 'cyrax',
       description = 'Static site generator',
       long_description = read('README'),
       license = 'BSD',
-      version = '0.1.18',
+      version = cyraxlib.__version__,
       author = 'Alexander Solovyov',
       author_email = 'piranha@piranha.org.ua',
       url = 'http://hg.piranha.org.ua/cyrax/',
