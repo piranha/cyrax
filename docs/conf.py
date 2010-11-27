@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-sys.path.append('..')
+sys.path.insert(0, '..')
 import cyraxlib
 
 # -- General configuration -----------------------------------------------------
