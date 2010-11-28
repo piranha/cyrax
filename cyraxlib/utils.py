@@ -1,7 +1,7 @@
-
 import urlparse
 import os.path as op
 import posixpath
+from itertools import izip, takewhile
 
 
 def new_base(obj, base):
@@ -41,3 +41,18 @@ def url2path(url):
 
 def path2url(path):
     return '/'.join(path.split(op.sep))
+
+
+def removecommon(p1, p2):
+    common = takewhile(lambda x: x[0] == x[1], izip(p1, p2))
+    l = len(list(common))
+    return p1[l:], p2[l:]
+
+
+def relpath(cur, dest):
+    p1, p2 = removecommon(*map(lambda x: x.rstrip(op.sep).split(op.sep),
+                               [cur, dest]))
+    p = ['../'] * len(p1) + p2
+    if not p:
+        return ''
+    return op.join(*p)

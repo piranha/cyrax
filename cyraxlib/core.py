@@ -44,7 +44,6 @@ class Site(object):
         self.env = initialize_env(root)
         self.env.globals['site'] = self
         self.entries = []
-        self.tags = {}
 
         if self.settings.get('sitecallback'):
             callback = impcallback(self.settings.sitecallback, self.root)
@@ -69,6 +68,8 @@ class Site(object):
             raise AttributeError(str(e))
 
     def _traverse(self):
+        events.emit('traverse-started', site=self)
+
         for path, _, files in os.walk(self.root):
             relative = path[len(self.root):].lstrip(os.sep)
             if (not relative.startswith('static') and
@@ -79,6 +80,7 @@ class Site(object):
                         op.join(relative, f) not in self.settings.get('exclude',
                                                                       [])):
                         self.add_page(op.join(relative, f).replace('\\', '/'))
+
         events.emit('site-traversed', site=self)
 
     def add_page(self, path):

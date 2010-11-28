@@ -26,8 +26,6 @@ class Post(object):
         self.settings.base = base
         self.settings.slug = op.splitext(slug)[0]
 
-        if not hasattr(self.site, 'posts'):
-            self.site.posts = []
         self.site.posts.append(self)
         self.site.posts.sort(cmp=postcmp, reverse=True)
         self.site.latest_post = self.site.posts[0]
@@ -46,6 +44,12 @@ class Post(object):
         url = posixpath.join(self.base, date, self.slug) + '/'
         return url
 
+    @staticmethod
+    def register(site):
+        site.posts = []
+
+events.connect('traverse-started', Post.register)
+
 
 class Page(object):
     @staticmethod
@@ -62,8 +66,6 @@ class Page(object):
         self.settings.base = base
         self.settings.slug = slug
 
-        if not hasattr(self.site, 'pages'):
-            self.site.pages = []
         self.site.pages.append(self)
 
     def __str__(self):
@@ -74,6 +76,12 @@ class Page(object):
         if self.isdir() and url and not url.endswith('/'):
             url += '/'
         return url
+
+    @staticmethod
+    def register(site):
+        site.pages = []
+
+events.connect('traverse-started', Page.register)
 
 
 class Tag(object):
@@ -101,14 +109,20 @@ class Tag(object):
             url += '/'
         return url
 
-def add_taglist_entries(site):
-    from cyraxlib.core import Entry
-    site.tag_cache = {}
-    for tag in site.tags:
-        path = '%s%s.html' % (Tag.prefix, tag)
-        site.entries.append(Entry(site, path, '_taglist.html'))
+    @staticmethod
+    def register(site):
+        site.tags = {}
 
-events.connect('site-traversed', add_taglist_entries)
+    @staticmethod
+    def process(site):
+        from cyraxlib.core import Entry
+        site.tag_cache = {}
+        for tag in site.tags:
+            path = '%s%s.html' % (Tag.prefix, tag)
+            site.entries.append(Entry(site, path, '_taglist.html'))
+
+events.connect('traverse-started', Tag.register)
+events.connect('site-traversed', Tag.process)
 
 
 TYPE_LIST = [Post, Tag, Page]

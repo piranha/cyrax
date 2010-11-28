@@ -1,4 +1,4 @@
-from jinja2 import Environment, FileSystemLoader, Undefined
+from jinja2 import Environment, FileSystemLoader, Undefined, ext
 
 from cyraxlib import typogrify, templatefilters, templatetags, templatefunctions
 
@@ -21,7 +21,8 @@ def initialize_env(source):
 
     env = Environment(loader=loader, undefined=LoyalUndefined,
                       extensions=[templatetags.MetaInfoExtension,
-                                  templatetags.MarkExtension])
+                                  templatetags.MarkExtension,
+                                  ext.with_])
 
     filters = dict((f.__name__, f) for f in typogrify.filters)
     env.filters.update(filters)
