@@ -112,3 +112,4 @@ events.connect('site-traversed', add_taglist_entries)
 
 
 TYPE_LIST = [Post, Tag, Page]
+

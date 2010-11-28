@@ -168,7 +168,7 @@ class Entry(BaseEntry):
         self._type_determined = True
 
     def __repr__(self):
-        type = self.settings.get('type', '').capitalize() or 'Entry'
+        type = self.settings.get('type', 'entry').capitalize()
         return '<%s: %r>' % (type, self.path)
 
     def __getitem__(self, name):
