@@ -40,7 +40,9 @@ by your distribution tools or by ``easy_install``::
 Usage
 -----
 
-Run ``./cyrax``. Look at ``content`` subdirectory for example site.
+Run ``./cyrax``. Look at ``content`` `subdirectory`_ for example site.
+
+.. _subdirectory: http://hg.piranha.org.ua/cyrax/file/tip/content/
 
 Contents:
 
