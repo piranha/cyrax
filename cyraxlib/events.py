@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-    glashammer.utils.events
-    ~~~~~~~~~~~~~~~~~~~~~~~
+    cyraxlib.events
+    ~~~~~~~~~~~~~~~
 
-    :copyright: 2007-2008 by Armin Ronacher
+    :copyright: 2007-2008 by Armin Ronacher as glashammer.utils.events
     :copyright: 2009 by Alexander Solovyov
     :license: MIT
 """
-# Events
 
 import logging
 from collections import deque
@@ -31,12 +30,14 @@ class EventManager(object):
         """
         listener_id = self._last_listener
         event = intern(event)
+
         if event not in self._listeners:
             self._listeners[event] = deque([callback])
         elif prepend:
             self._listeners[event].appendleft(callback)
         else:
             self._listeners[event].append(callback)
+
         self._last_listener += 1
         return listener_id
 
@@ -44,7 +45,7 @@ class EventManager(object):
         """Emit a event and return a `EventResult` instance."""
         if event != 'log':
             logger.debug('Emit: %s (%s)' % (event, ', '.join(map(repr, args))))
-        return [x(*args, **kwargs) for x in self.iter(event)]
+        return [cb(*args, **kwargs) for cb in self.iter(event)]
 
     def iter(self, event):
         """Return an iterator for all listeners of a given name."""
