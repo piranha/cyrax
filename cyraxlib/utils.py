@@ -50,8 +50,10 @@ def removecommon(p1, p2):
 
 
 def relpath(cur, dest):
-    p1, p2 = removecommon(*map(lambda x: x.rstrip(op.sep).split(op.sep),
-                               [cur, dest]))
+    p1, p2 = removecommon(cur.split(op.sep), dest.split(op.sep))
+    # empty element because of / in the end of name
+    if p1 and p1[-1] == '':
+        p1 = p1[:-1]
     p = ['../'] * len(p1) + p2
     if not p:
         return ''
