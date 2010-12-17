@@ -1,31 +1,144 @@
-import re, datetime
+import re
+import time
+import datetime
 import posixpath
 import os.path as op
+import logging
 
+from cyrax.conf import Settings
 from cyrax.events import events
-from cyrax.utils import path2url
+from cyrax.utils import (safe_url_join, url2path, path2url,
+                         base_path, makedirs)
 
 
+logger = logging.getLogger(__name__)
 DATE_RE = re.compile(r'(.*?)(\d+)[/-](\d+)[/-](\d+)[/-](.*)$')
+
 
 def postcmp(x, y):
     xd = x.settings.get('updated', x.settings.date)
     yd = y.settings.get('updated', y.settings.date)
     return -1 if xd < yd else 1 if xd > yd else 0
 
-class Post(object):
+
+class Entry(object):
+    def __init__(self, site, path, source=None):
+        '''Initialize an entry
+
+        This involves change of base class by running static method Class.check
+        of every member of models.TYPE_LIST.
+
+        Arguments:
+
+         - `site`: site this entry belongs to
+         - `path`: relative path to source template and to result
+         - `source`: optional source template path. Can be used to trick
+            system to have virtual entries (with no real equivalent in
+            source directory)
+        '''
+        self.site = site
+        self.path = path
+        self.source = source
+        self.mtime = self.get_mtime()
+
+        self.settings = Settings(parent=self.site.settings)
+
+        base = '_%s.html' % self.__class__.__name__.lower()
+        if op.exists(op.join(self.site.root, base)):
+            self.settings.parent_tmpl = base
+
+        self.template = self.get_template()
+        self.settings.base, self.settings.slug = op.split(self.path)
+        self.collect()
+        if hasattr(self, 'init'):
+            self.init()
+
+    def __repr__(self):
+        type = self.settings.get('type', 'entry').capitalize()
+        return '<%s: %r>' % (type, self.path)
+
+    def __getitem__(self, name):
+        return self.settings[name]
+
+    def __getattr__(self, name):
+        try:
+            return self.settings[name]
+        except KeyError:
+            raise AttributeError(name)
+
+    def get_mtime(self):
+        '''Determine modification time (with date)
+
+        As in modification time vs creation time
+
+        Thinks that if source is not null, then entry is virtual
+        and returns current datetime
+        '''
+        if self.source:
+            return datetime.datetime.now()
+        mtime = op.getmtime(op.join(self.site.root, self.path))
+        return datetime.datetime(*time.gmtime(mtime)[:6])
+
+    def get_template(self):
+        '''Get Jinja2 template of entry to render
+        '''
+        return self.site.env.get_template(self.source or self.path,
+                                          globals={'entry': self})
+
+    def collect(self):
+        '''Collect settings information from entry
+
+        Renders Jinja2 template to get this information from {% meta %}
+        '''
+        self.template.render()
+
+    def isdir(self):
+        '''Determines if entry should be rendered as directory
+        '''
+        return self.settings.get('isdir', True)
+
+    def get_dest(self):
+        path = op.join(self.site.dest, url2path(self.get_relative_url()))
+        if self.isdir():
+            path = op.join(path, 'index.html')
+        return path
+
+    def get_relative_url(self):
+        return self.path
+
+    def get_url(self):
+        return safe_url_join(base_path(self.site.url), self.get_relative_url())
+
+    def get_absolute_url(self):
+        return safe_url_join(self.site.url, self.get_relative_url())
+
+    def render(self):
+        logger.info('Rendering %s' % self.get_absolute_url())
+        # workaround for a dumb bug
+        # no ideas why but all tag templates contain same self inside
+        self.template.globals['entry'] = self
+        path = self.get_dest()
+        makedirs(op.dirname(path))
+        file(path, 'w').write(self.template.render().encode('utf-8'))
+
+
+class Post(Entry):
     @staticmethod
-    def check(entry):
-        if DATE_RE.search(entry.path):
+    def check(site, path):
+        if DATE_RE.search(path):
             return True
         return False
 
-    def __init__(self):
-        base, Y, M, D, slug = DATE_RE.search(self.path).groups()
-        self.settings.date = datetime.datetime(int(Y), int(M), int(D))
+    def __init__(self, site, path, source=None):
+        base, Y, M, D, slug = DATE_RE.search(path).groups()
+        self.date = datetime.datetime(int(Y), int(M), int(D))
+        super(Post, self).__init__(site, path, source)
         self.settings.base = base
         self.settings.slug = op.splitext(slug)[0]
 
+    def init(self):
+        # dumb hack
+        self.settings.date = self.date
         self.site.posts.append(self)
         self.site.posts.sort(cmp=postcmp, reverse=True)
         self.site.latest_post = self.site.posts[0]
@@ -54,18 +167,20 @@ class Post(object):
 events.connect('traverse-started', Post.register)
 
 
-class Page(object):
+class Page(Entry):
     @staticmethod
-    def check(entry):
+    def check(site, path):
         return True
 
-    def __init__(self):
+    def init(self):
         if self.isdir():
             if self.path.endswith('index.html'):
-                self.path = self.path[:-len('index.html')]
-            elif self.path.endswith('.html'):
-                self.path = self.path[:-len('.html')]
-        base, slug = op.split(self.path)
+                path = self.path[:-len('index.html')]
+            else:
+                path = op.splitext(self.path)[0]
+        else:
+            path = self.path
+        base, slug = op.split(path)
         self.settings.base = base
         self.settings.slug = slug
 
@@ -87,16 +202,16 @@ class Page(object):
 events.connect('traverse-started', Page.register)
 
 
-class Tag(object):
+class Tag(Entry):
 
     prefix = 'tag' + op.sep
 
     @classmethod
-    def check(cls, entry):
-        res = entry.path.startswith(cls.prefix)
+    def check(cls, site, path):
+        res = path.startswith(cls.prefix)
         return res
 
-    def __init__(self):
+    def init(self):
         self.slug = self.path[len(self.prefix):-len('.html')]
         self.site.tag_cache[self.slug] = self
 
@@ -116,13 +231,12 @@ class Tag(object):
     def register(site):
         site.tags = {}
 
-    @staticmethod
-    def process(site):
-        from cyrax.core import Entry
+    @classmethod
+    def process(cls, site):
         site.tag_cache = {}
         for tag in site.tags:
-            path = '%s%s.html' % (Tag.prefix, tag)
-            site.entries.append(Entry(site, path, '_taglist.html'))
+            path = '%s%s.html' % (cls.prefix, tag)
+            site.entries.append(cls(site, path, '_taglist.html'))
 
 events.connect('traverse-started', Tag.register)
 events.connect('site-traversed', Tag.process)

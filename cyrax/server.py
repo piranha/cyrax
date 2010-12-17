@@ -7,7 +7,8 @@ import logging
 
 from cyrax import autoreload, core
 
-logger = logging.getLogger('server')
+logger = logging.getLogger(__name__)
+
 
 class CyraxHTTPRequestHandler(SimpleHTTPRequestHandler):
 

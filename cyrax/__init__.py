@@ -6,7 +6,7 @@ from cyrax.core import Site
 from cyrax.server import start_server
 
 __version__ = '2.0'
-
+logger = logging.getLogger('cyrax')
 
 def main():
     usage = '%s [options] [source]' % sys.argv[0]
@@ -37,6 +37,7 @@ def main():
         level = logging.ERROR
     else:
         level = logging.INFO
+
     if opts.log == '-':
         logging.basicConfig(stream=sys.stdout, level=level)
     else:
@@ -44,7 +45,7 @@ def main():
 
     source = op.abspath(args and args[0] or '.')
     if not op.exists(op.join(source, 'settings.cfg')):
-        logging.error("Can't find settings.cfg in the current folder")
+        logger.error("Can't find settings.cfg in the current folder")
         sys.exit(1)
 
     dest = opts.dest and opts.dest or op.join(source, '_build')

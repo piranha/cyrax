@@ -14,16 +14,13 @@ def markdown(value):
 
     return md.convert(value)
 
+
 def rst(value):
     try:
         import docutils.core
+        import cyrax.template.rstextensions
     except ImportError:
         raise jinja2.TemplateError('docutils are not installed!')
-
-    try:
-        import cyrax.highlight.rst
-    except ImportError:
-        pass # Pygments not installed
 
     settings = {'footnote_references': 'superscript'}
     parts = docutils.core.publish_parts(source=value, writer_name='html',

@@ -11,7 +11,7 @@
 import logging
 from collections import deque
 
-logger = logging.getLogger('events')
+logger = logging.getLogger(__name__)
 # `events` global is defined at the end
 
 

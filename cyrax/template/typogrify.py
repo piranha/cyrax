@@ -8,7 +8,8 @@ import logging
 
 import jinja2
 
-logger = logging.getLogger('typogrify')
+logger = logging.getLogger(__name__)
+
 
 def amp(text):
     """Wraps apersands in HTML with ``<span class="amp">`` so they can be
@@ -78,21 +79,23 @@ def caps(text):
     try:
         import smartypants
     except ImportError:
-        logger.error("Error in caps filter: The Python SmartyPants library isn't installed.")
+        logger.error("Error in caps filter: The Python SmartyPants library "
+                     "is not installed.")
         return text
 
     tokens = smartypants._tokenize(text)
     result = []
     in_skipped_tag = False
 
-    cap_finder = re.compile(r"""(
-                            (\b[A-Z\d]*        # Group 2: Any amount of caps and digits
-                            [A-Z]\d*[A-Z]      # A cap string much at least include two caps (but they can have digits between them)
-                            [A-Z\d']*\b)       # Any amount of caps and digits or dumb apostsrophes
-                            | (\b[A-Z]+\.\s?   # OR: Group 3: Some caps, followed by a '.' and an optional space
-                            (?:[A-Z]+\.\s?)+)  # Followed by the same thing at least once more
-                            (?:\s|\b|$))
-                            """, re.VERBOSE)
+    cap_finder = re.compile(
+        r"""(
+        (\b[A-Z\d]*        # Group 2: Any amount of caps and digits
+        [A-Z]\d*[A-Z]      # A cap string much at least include two caps (but they can have digits between them)
+        [A-Z\d']*\b)       # Any amount of caps and digits or dumb apostsrophes
+        | (\b[A-Z]+\.\s?   # OR: Group 3: Some caps, followed by a '.' and an optional space
+        (?:[A-Z]+\.\s?)+)  # Followed by the same thing at least once more
+        (?:\s|\b|$))
+        """, re.VERBOSE)
 
     def _cap_wrapper(matchobj):
         """This is necessary to keep dotted cap strings to pick up extra spaces"""
@@ -108,7 +111,6 @@ def caps(text):
             return """<span class="caps">%s</span>%s""" % (caps, tail)
 
     tags_to_skip_regex = re.compile("<(/)?(?:pre|code|kbd|script|math)[^>]*>", re.IGNORECASE)
-
 
     for token in tokens:
         if token[0] == "tag":

@@ -1,12 +1,15 @@
 import urlparse
+import os
 import os.path as op
 import posixpath
 from itertools import izip, takewhile
 
 
-def new_base(obj, base):
-    name = base.__name__ + obj.__class__.__name__
-    return type(name, (base, ), dict(obj.__class__.__dict__))
+def makedirs(path):
+    try:
+        os.makedirs(path)
+    except OSError:
+        pass
 
 
 def safe_url_join(base, path):
@@ -24,7 +27,7 @@ def safe_url_join(base, path):
     return urlparse.urlunparse(parts)
 
 
-def get_base_path(url):
+def base_path(url):
     """
     >>> get_base_path('http://google.com')
     '/'

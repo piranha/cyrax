@@ -46,7 +46,7 @@ try:
 except ImportError:
     pass
 
-logger = logging.getLogger('autoreload')
+logger = logging.getLogger(__name__)
 
 RUN_RELOADER = True
 

@@ -5,7 +5,9 @@ from cyrax import utils
 
 @contextfunction
 def url_for(context, path):
-    basepath = utils.get_base_path(context['site'].url)
+    if not path:
+        return ''
+    basepath = utils.base_path(context['site'].url)
     return utils.relpath(
         utils.safe_url_join(basepath, context['entry'].get_relative_url()),
         utils.safe_url_join(basepath, path))
