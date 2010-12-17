@@ -1,6 +1,7 @@
 from jinja2 import Environment, FileSystemLoader, Undefined, ext
 
-from cyraxlib import typogrify, templatefilters, templatetags, templatefunctions
+from cyrax.template import (typogrify, templatefilters, templatetags,
+                            templatefunctions)
 
 
 class LoyalUndefined(Undefined):

@@ -5,7 +5,7 @@ from BaseHTTPServer import HTTPServer
 import urllib
 import logging
 
-from cyraxlib import autoreload, core
+from cyrax import autoreload, core
 
 logger = logging.getLogger('server')
 

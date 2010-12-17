@@ -14,7 +14,6 @@ def markdown(value):
 
     return md.convert(value)
 
-
 def rst(value):
     try:
         import docutils.core
@@ -22,7 +21,7 @@ def rst(value):
         raise jinja2.TemplateError('docutils are not installed!')
 
     try:
-        import cyraxlib.highlight.rst
+        import cyrax.highlight.rst
     except ImportError:
         pass # Pygments not installed
 

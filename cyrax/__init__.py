@@ -1,11 +1,11 @@
-#!/usr/bin/env python
-
-import os, sys, logging
+import sys, logging
 import os.path as op
 from optparse import OptionParser
 
-from cyraxlib.core import Site
-from cyraxlib.server import start_server
+from cyrax.core import Site
+from cyrax.server import start_server
+
+__version__ = '2.0'
 
 
 def main():
@@ -54,6 +54,3 @@ def main():
     else:
         site = Site(source, dest)
         site.render()
-
-if __name__ == '__main__':
-    main()

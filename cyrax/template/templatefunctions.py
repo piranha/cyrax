@@ -1,5 +1,7 @@
 from jinja2 import contextfunction
-from cyraxlib import utils
+
+from cyrax import utils
+
 
 @contextfunction
 def url_for(context, path):

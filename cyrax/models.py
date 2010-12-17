@@ -2,9 +2,9 @@ import re, datetime
 import posixpath
 import os.path as op
 
+from cyrax.events import events
+from cyrax.utils import path2url
 
-from cyraxlib.events import events
-from cyraxlib.utils import path2url
 
 DATE_RE = re.compile(r'(.*?)(\d+)[/-](\d+)[/-](\d+)[/-](.*)$')
 
@@ -30,6 +30,9 @@ class Post(object):
         self.site.posts.sort(cmp=postcmp, reverse=True)
         self.site.latest_post = self.site.posts[0]
 
+        self._process_tags()
+
+    def _process_tags(self):
         for tag in self.settings.get('tags', []):
             tagentries = self.site.tags.setdefault(tag, [])
             if self not in tagentries:
@@ -115,7 +118,7 @@ class Tag(object):
 
     @staticmethod
     def process(site):
-        from cyraxlib.core import Entry
+        from cyrax.core import Entry
         site.tag_cache = {}
         for tag in site.tags:
             path = '%s%s.html' % (Tag.prefix, tag)

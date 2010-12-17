@@ -2,11 +2,12 @@ import os, shutil, logging, datetime, time
 import os.path as op
 import sys
 
-from cyraxlib.conf import Settings
-from cyraxlib.env import initialize_env
-from cyraxlib.utils import new_base, safe_url_join, url2path, get_base_path
-from cyraxlib.models import TYPE_LIST
-from cyraxlib.events import events
+from cyrax.conf import Settings
+from cyrax.template import initialize_env
+from cyrax.utils import new_base, safe_url_join, url2path, get_base_path
+from cyrax.models import TYPE_LIST
+from cyrax.events import events
+
 
 logger = logging.getLogger('core')
 
@@ -17,8 +18,10 @@ def makedirs(path):
     except OSError:
         pass
 
+
 def ishidden(name):
     return name.startswith('.') or name.startswith('_')
+
 
 def impcallback(relpath, root):
     if not root in sys.path:
@@ -26,6 +29,7 @@ def impcallback(relpath, root):
     modname, cbname = relpath.rsplit('.', 1)
     mod = __import__(modname, {}, {}, [1])
     return getattr(mod, cbname)
+
 
 class Site(object):
     def __init__(self, root, dest):
@@ -119,6 +123,7 @@ class Entry(BaseEntry):
             entry is "virtual" (has no real equivalent in source directory).
             Hence `mtime` will be current time.
         '''
+        print path, source
         self.site = site
         self.path = path
 

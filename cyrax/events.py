@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    cyraxlib.events
+    cyrax.events
     ~~~~~~~~~~~~~~~
 
     :copyright: 2007-2008 by Armin Ronacher as glashammer.utils.events

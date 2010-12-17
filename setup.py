@@ -6,22 +6,25 @@ from setuptools import setup
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-import cyraxlib
+import cyrax
 
 setup(name = 'cyrax',
       description = 'Static site generator',
       long_description = read('README'),
       license = 'BSD',
-      version = cyraxlib.__version__,
+      version = cyrax.__version__,
       author = 'Alexander Solovyov',
-      author_email = 'piranha@piranha.org.ua',
+      author_email = 'alexander@solovyov.net',
       url = 'http://hg.piranha.org.ua/cyrax/',
-      packages = ['cyraxlib'],
-      scripts = ['cyrax'],
-      install_requires = ['Jinja2'],
+      install_requires = ['Jinja2', 'smartypants'],
+      packages = ['cyrax', 'cyrax.template'],
+
+      entry_points = {
+        'console_scripts': ['cyrax = cyrax:main']
+        },
+
       classifiers = [
         'Environment :: Console',
-        'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
