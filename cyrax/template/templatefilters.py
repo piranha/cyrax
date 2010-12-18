@@ -18,10 +18,10 @@ def markdown(value):
 def rst(value):
     try:
         import docutils.core
-        import cyrax.template.rstextensions
     except ImportError:
         raise jinja2.TemplateError('docutils are not installed!')
 
+    import cyrax.template.rstextensions
     settings = {'footnote_references': 'superscript'}
     parts = docutils.core.publish_parts(source=value, writer_name='html',
                                         settings_overrides=settings)

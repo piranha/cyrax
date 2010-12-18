@@ -17,10 +17,6 @@ class MetaInfoExtension(Extension):
 
         args = [nodes.Name('entry', 'load'), nodes.Const(config)]
 
-        # Quick fix, till Jinja2 get's fixed
-        # Should be:
-        #output = [self.call_method('_update_entry', args=args),
-
         output = [
             nodes.CallBlock(self.call_method('_update_entry', args=args),
                             [], [], '').set_lineno(lineno),
@@ -30,7 +26,6 @@ class MetaInfoExtension(Extension):
 
     def _update_entry(self, entry, config, caller):
         entry.settings.read(config)
-        # TODO: Remove me when Jinja2 will be fixed
         return ''
 
     def _determine_parent(self, entry):
@@ -54,5 +49,4 @@ class MarkExtension(Extension):
     def _set_attr(self, entry, name, caller):
         if entry:
             setattr(entry, name, caller())
-        # TODO: Remove me when Jinja2 will be fixed
         return ''
