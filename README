@@ -12,29 +12,56 @@ come up with name I remembered my favourite character from Mortal Kombat 3 so
 here we go.
 
 Installation
-~~~~~~~~~~~~
+------------
 
-Cyrax depends on Jinja2 template library, you should either install it as your
-distribution prefers (it's present in most of major distributions, particularly
-in Debian and MacPorts) or rely on ``pip`` (it will download Jinja2 if not
-present when installing cyrax). Then get cyrax by either installing latest
-release from PyPI::
+Well, it's quite simple, as usually::
 
-   pip install cyrax
+  pip install cyrax
 
-or development version from repository::
+Cyrax depends on Jinja2 template library, so you can install it through your OS
+package system. Also CherryPy is used by Cyrax' internal web server (if you want
+to use it at all :).
 
-   pip install hg+http://hg.piranha.org.ua/cyrax/#egg=cyrax
+Note, please, that to use parsers like markdown, or reST, or textile,
+corresponding libraries should be installed (either python-markdown or
+python-markdown2 are good enough for markdown).
 
 Usage
-~~~~~
+-----
 
 Read some docs_, run ``cyrax --help`` to read about command line options, look
-at example_.
+at `example site`_.
+
+News
+----
+
+Indeed something happens with each release and you are probably interested what
+(and too lazy to read `changelog`_).
+
+2.0
+~~~
+
+- refactored module system, no more ``cyraxlib``, only ``cyrax`` now exists
+- completely refactored internal models system, now it uses usual inheritance
+  instead of some strange composition (which means it's easier to understand
+  and to extend now)
+- ability to write posts in reStructuredText (which as well could serve as an
+  `example`_ to writing your own models).
+
+.. _changelog: http://hg.piranha.org.ua/cyrax/
+.. _example: http://hg.piranha.org.ua/cyrax/file/tip/cyrax/rstpost.py
+
+1.0-1.1
+~~~~~~~
+
+- now most of urls generated on page (by function ``url_for``) are relative to
+  current page, which means that you mostly can view your site without using
+  web-server (though you'll need to click on ``index.html`` yourself :)
+- some docs, heh. This part needs attention anyway
 
 .. _Jinja2: http://jinja.pocoo.org/2/
 .. _Jekyll: http://github.com/mojombo/jekyll/
 .. _Hyde: http://github.com/lakshmivyas/hyde/
 .. _repository: http://hg.piranha.org.ua/cyrax/
 .. _docs: http://hg.piranha.org.ua/cyrax/docs/
-.. _example: http://hg.piranha.org.ua/cyrax/file/tip/content/
+.. _example site: http://hg.piranha.org.ua/cyrax/file/tip/content/
