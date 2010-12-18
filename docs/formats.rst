@@ -85,11 +85,17 @@ Common configuration variables:
 - ``type`` (default: ``None``) - predefine type of current entry, without
   running ``check()`` from every model.
 
+NonHTML
+~~~~~~~
+
+Model for entries whose extension doesn't end with ``.html``, usually last of
+models in ``TYPE_LIST``. ``isdir`` returns ``False`` by default.
+  
 Page
 ~~~~
 
-Page is usually last of the models and it's ``check()`` always returns
-``True``. Does nothing special.
+Page is a model for single html pages and it's ``check()`` returns ``True`` if
+path ends with ``.html``. Does nothing special.
 
 Post
 ~~~~

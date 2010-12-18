@@ -122,6 +122,15 @@ class Entry(object):
         file(path, 'w').write(self.template.render().encode('utf-8'))
 
 
+class NonHTML(Entry):
+    @staticmethod
+    def check(site, path):
+        return not path.endswith('.html')
+
+    def isdir(self):
+        return self.settings.get('isdir', False)
+
+
 class Post(Entry):
     @staticmethod
     def check(site, path):
@@ -170,7 +179,7 @@ events.connect('traverse-started', Post.register)
 class Page(Entry):
     @staticmethod
     def check(site, path):
-        return True
+        return path.endswith('.html')
 
     def init(self):
         if self.isdir():
@@ -242,7 +251,7 @@ events.connect('traverse-started', Tag.register)
 events.connect('site-traversed', Tag.process)
 
 
-TYPE_LIST = [Post, Tag, Page]
+TYPE_LIST = [Post, Tag, Page, NonHTML]
 
 try:
     import cyrax.rstpost
