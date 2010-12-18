@@ -244,3 +244,7 @@ events.connect('site-traversed', Tag.process)
 
 TYPE_LIST = [Post, Tag, Page]
 
+try:
+    import cyrax.rstpost
+except ImportError:
+    pass # no docutils :(
