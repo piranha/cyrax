@@ -8,6 +8,11 @@ from cyrax.utils import url2path, base_path
 from cyrax.models import TYPE_LIST
 from cyrax.events import events
 
+try:
+    import cyrax.rstpost
+except ImportError:
+    pass # no docutils :(
+
 
 logger = logging.getLogger(__name__)
 

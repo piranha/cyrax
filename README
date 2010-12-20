@@ -38,8 +38,15 @@ News
 Indeed something happens with each release and you are probably interested what
 (and too lazy to read `changelog`_).
 
-2.0
-~~~
+.. _changelog: http://hg.piranha.org.ua/cyrax/
+
+2.1 (20.12.2010)
+~~~~~~~~~~~~~~~~
+
+- nasty bug with circular dependecies
+
+2.0 (18.12.2010)
+~~~~~~~~~~~~~~~~
 
 - refactored module system, no more ``cyraxlib``, only ``cyrax`` now exists
 - completely refactored internal models system, now it uses usual inheritance
@@ -48,11 +55,10 @@ Indeed something happens with each release and you are probably interested what
 - ability to write posts in reStructuredText (which as well could serve as an
   `example`_ to writing your own models).
 
-.. _changelog: http://hg.piranha.org.ua/cyrax/
 .. _example: http://hg.piranha.org.ua/cyrax/file/tip/cyrax/rstpost.py
 
-1.0-1.1
-~~~~~~~
+1.0-1.1 (28.11.2010)
+~~~~~~~~~~~~~~~~~~~~
 
 - now most of urls generated on page (by function ``url_for``) are relative to
   current page, which means that you mostly can view your site without using

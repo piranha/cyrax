@@ -3,6 +3,7 @@ from docutils.writers import html4css1
 from docutils.parsers.rst import directives, Directive
 
 from cyrax import models
+import cyrax.template.rstextensions
 
 
 class CyraxWriter(html4css1.Writer):

@@ -21,6 +21,8 @@ class Pygments(Directive):
             :linenos:
 
             My code goes here.
+
+    If you want to use it, don't forget to generate style css.
     """
     required_arguments = 1
     optional_arguments = 0
@@ -29,8 +31,8 @@ class Pygments(Directive):
 
     def __init__(self, *args, **kwargs):
         self.VARIANTS = {
-            'default': HtmlFormatter(noclasses=True),
-            'linenos': HtmlFormatter(noclasses=True, linenos=True),
+            'default': HtmlFormatter(noclasses=False),
+            'linenos': HtmlFormatter(noclasses=False, linenos=True),
             }
         self.option_spec = dict((key, directives.flag) for key in self.VARIANTS)
         super(Pygments, self).__init__(*args, **kwargs)

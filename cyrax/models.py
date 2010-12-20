@@ -54,8 +54,7 @@ class Entry(object):
             self.init()
 
     def __repr__(self):
-        type = self.settings.get('type', 'entry').capitalize()
-        return '<%s: %r>' % (type, self.path)
+        return '<%s: %r>' % (self.__class__.__name__, self.path)
 
     def __getitem__(self, name):
         return self.settings[name]
@@ -113,7 +112,7 @@ class Entry(object):
         return safe_url_join(self.site.url, self.get_relative_url())
 
     def render(self):
-        logger.info('Rendering %s' % self.get_absolute_url())
+        logger.info('Rendering %r' % self)
         # workaround for a dumb bug
         # no ideas why but all tag templates contain same self inside
         self.template.globals['entry'] = self
@@ -252,8 +251,3 @@ events.connect('site-traversed', Tag.process)
 
 
 TYPE_LIST = [Post, Tag, Page, NonHTML]
-
-try:
-    import cyrax.rstpost
-except ImportError:
-    pass # no docutils :(
