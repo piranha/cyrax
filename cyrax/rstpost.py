@@ -66,8 +66,5 @@ class RstPost(models.Post):
         return self.site.env.get_template(
             '_rstpost.html', globals={'entry': self, 'parts': parts})
 
-    def __repr__(self):
-        return '"%s"' % self.path
-
 
 models.TYPE_LIST.insert(0, RstPost)
