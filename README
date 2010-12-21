@@ -41,7 +41,7 @@ Indeed something happens with each release and you are probably interested what
 .. _changelog: http://hg.piranha.org.ua/cyrax/
 
 2.1-2.2 (21.12.2010)
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 
 - nasty bug with circular dependecies
 - forget to process tags in RstPost
