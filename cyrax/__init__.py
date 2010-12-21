@@ -5,7 +5,7 @@ from optparse import OptionParser
 from cyrax.core import Site
 from cyrax.server import start_server
 
-__version__ = '2.1'
+__version__ = '2.2'
 logger = logging.getLogger('cyrax')
 
 def main():

@@ -59,6 +59,8 @@ class RstPost(models.Post):
         self.site.posts.sort(cmp=models.postcmp, reverse=True)
         self.site.latest_post = self.site.posts[0]
 
+        self._process_tags()
+
     def get_template(self):
         source = file(self.path).read()
         parts = core.publish_parts(source, writer=CyraxWriter())
