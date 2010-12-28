@@ -48,6 +48,12 @@ directives.register_directive('meta', CyraxMeta)
 
 
 class RstPost(models.Post):
+
+    def __init__(self, *args, **kwargs):
+        if not 'source' in kwargs:
+            kwargs['source'] = '_post.html'
+        super(RstPost, self).__init__(*args, **kwargs)
+
     @staticmethod
     def check(site, path):
         return models.Post.check(site, path) and path.endswith('.rst')
@@ -61,12 +67,12 @@ class RstPost(models.Post):
 
         self._process_tags()
 
-    def get_template(self):
+    def collect(self):
         source = file(self.path).read()
         parts = core.publish_parts(source, writer=CyraxWriter())
         self.settings.read(parts['cyraxmeta'])
-        return self.site.env.get_template(
-            '_rstpost.html', globals={'entry': self, 'parts': parts})
+        self.settings.title = parts['title']
+        self.settings.body = parts['body']
 
 
 models.TYPE_LIST.insert(0, RstPost)

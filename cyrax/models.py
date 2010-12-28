@@ -68,14 +68,15 @@ class Entry(object):
     def get_mtime(self):
         '''Determine modification time (with date)
 
-        As in modification time vs creation time
+        As in modification time vs creation time.
 
-        Thinks that if source is not null, then entry is virtual
-        and returns current datetime
+        If source is not null and path does not exist, then entry is virtual and
+        returns current datetime.
         '''
-        if self.source:
+        path = op.join(self.site.root, self.path)
+        if self.source and not op.exists(path):
             return datetime.datetime.now()
-        mtime = op.getmtime(op.join(self.site.root, self.path))
+        mtime = op.getmtime(path)
         return datetime.datetime(*time.gmtime(mtime)[:6])
 
     def get_template(self):

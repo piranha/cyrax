@@ -5,7 +5,7 @@ from optparse import OptionParser
 from cyrax.core import Site
 from cyrax.server import start_server
 
-__version__ = '2.2'
+__version__ = '2.3'
 logger = logging.getLogger('cyrax')
 
 def main():
@@ -48,7 +48,7 @@ def main():
         logger.error("Can't find settings.cfg in the current folder")
         sys.exit(1)
 
-    dest = opts.dest and opts.dest or op.join(source, '_build')
+    dest = opts.dest or op.join(source, '_build')
 
     if opts.webserve:
         start_server(opts.address, opts.port, source, dest)

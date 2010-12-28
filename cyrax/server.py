@@ -38,15 +38,14 @@ class CyraxHTTPRequestHandler(SimpleHTTPRequestHandler):
             path = os.path.join(path, word)
         return path
 
+
 def run_server(address, port, source, dest):
     core.Site(source, dest).render()
     CyraxHTTPRequestHandler.rootpath = dest
     httpd = HTTPServer((address, port), CyraxHTTPRequestHandler)
     logger.info("Serving at http://%s:%s", address, port)
-    try:
-        httpd.serve_forever()
-    except KeyboardInterrupt:
-        sys.exit(0)
+    httpd.serve_forever()
+
 
 def start_server(address, port, source, dest):
     autoreload.main(run_server, (), {

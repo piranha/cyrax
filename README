@@ -40,6 +40,11 @@ Indeed something happens with each release and you are probably interested what
 
 .. _changelog: http://hg.piranha.org.ua/cyrax/
 
+2.3 (28.12.2010)
+~~~~~~~~~~~~~~~~
+
+- rework RstPost a bit, removing nasty bugs with template caching
+
 2.1-2.2 (21.12.2010)
 ~~~~~~~~~~~~~~~~~~~~
 

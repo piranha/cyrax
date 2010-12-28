@@ -23,7 +23,8 @@ def initialize_env(source):
     env = Environment(loader=loader, undefined=LoyalUndefined,
                       extensions=[templatetags.MetaInfoExtension,
                                   templatetags.MarkExtension,
-                                  ext.with_])
+                                  ext.with_],
+                      cache_size=-1)
 
     filters = dict((f.__name__, f) for f in typogrify.filters)
     env.filters.update(filters)
