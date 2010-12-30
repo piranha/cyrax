@@ -26,9 +26,7 @@ Well, it's quite simple, as usually::
   pip install cyrax
 
 If you've cloned `repository`_, then maybe you want to know that Cyrax depends
-on Jinja2 template library and, if you want to use built-in server (for example
-to look at your site when not deployed yet), on CherryPy (on their
-``wsgiserver`` stuff).
+on Jinja2 template library.
 
 .. _repository: http://hg.piranha.org.ua/cyrax/
 

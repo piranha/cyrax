@@ -19,8 +19,7 @@ Well, it's quite simple, as usually::
   pip install cyrax
 
 Cyrax depends on Jinja2 template library, so you can install it through your OS
-package system. Also CherryPy is used by Cyrax' internal web server (if you want
-to use it at all :).
+package system (in other case pip will install it automatically).
 
 Note, please, that to use parsers like markdown, or reST, or textile,
 corresponding libraries should be installed (either python-markdown or
