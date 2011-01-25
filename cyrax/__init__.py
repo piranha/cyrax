@@ -2,13 +2,13 @@ import sys, logging
 import os.path as op
 from optparse import OptionParser
 
-from cyrax.core import Site
-from cyrax.server import start_server
-
 __version__ = '2.3'
 logger = logging.getLogger('cyrax')
 
 def main():
+    from cyrax.core import Site
+    from cyrax.server import start_server
+    
     usage = '%s [options] [source]' % sys.argv[0]
     parser = OptionParser(usage)
 
