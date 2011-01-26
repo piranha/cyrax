@@ -15,7 +15,7 @@ setup(name = 'cyrax',
       version = cyrax.__version__,
       author = 'Alexander Solovyov',
       author_email = 'alexander@solovyov.net',
-      url = 'http://hg.piranha.org.ua/cyrax/',
+      url = 'http://hg.piranha.org.ua/cyrax/docs/',
       install_requires = ['Jinja2', 'smartypants'],
       packages = ['cyrax', 'cyrax.template'],
 
