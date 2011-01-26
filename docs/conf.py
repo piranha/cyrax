@@ -2,7 +2,7 @@
 
 import sys
 sys.path.insert(0, '..')
-import cyraxlib
+import cyrax
 
 # -- General configuration -----------------------------------------------------
 
@@ -12,7 +12,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 project = u'Cyrax'
 copyright = u'2009-2010, Alexander Solovyov'
-version = release = cyraxlib.__version__
+version = release = cyrax.__version__
 exclude_trees = ['_build']
 pygments_style = 'sphinx'
 
