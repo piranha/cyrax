@@ -11,18 +11,13 @@ templates_path = ['_templates']
 source_suffix = '.rst'
 master_doc = 'index'
 project = u'Cyrax'
-copyright = u'2009-2010, Alexander Solovyov'
+copyright = u'2009-2011, Alexander Solovyov'
 version = release = cyrax.__version__
 exclude_trees = ['_build']
 pygments_style = 'sphinx'
 
 # -- Options for HTML output ---------------------------------------------------
 
-html_theme = 'default'
-html_style = 'cleanery.css'
-html_theme_options = {'nosidebar': True}
+html_theme = 'cleanery'
+html_theme_path = ['.']
 html_title = "%s v%s" % (project, version)
-html_static_path = ['_static']
-html_use_smartypants = True
-html_use_index = False
-html_show_sourcelink = False
