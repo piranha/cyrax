@@ -3,7 +3,7 @@ from docutils.writers import html4css1
 from docutils.parsers.rst import directives, Directive
 
 from cyrax import models
-import cyrax.template.rstextensions
+from cyrax.template.rstextensions import RST_SETTINGS
 
 
 class CyraxWriter(html4css1.Writer):
@@ -41,7 +41,6 @@ class CyraxMeta(Directive):
 
         node = nodes.Element()
         node += nodes.raw(self.content)
-        print self.content
         return [nodes.docinfo(self.content)]
 
 directives.register_directive('meta', CyraxMeta)
@@ -69,7 +68,8 @@ class RstPost(models.Post):
 
     def collect(self):
         source = file(self.path).read()
-        parts = core.publish_parts(source, writer=CyraxWriter())
+        parts = core.publish_parts(source, writer=CyraxWriter(),
+                                   settings_overrides=RST_SETTINGS)
         self.settings.read(parts['cyraxmeta'])
         self.settings.title = parts['title']
         self.settings.body = parts['body']

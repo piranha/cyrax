@@ -21,10 +21,9 @@ def rst(value):
     except ImportError:
         raise jinja2.TemplateError('docutils are not installed!')
 
-    import cyrax.template.rstextensions
-    settings = {'footnote_references': 'superscript'}
+    from cyrax.template.rstextensions import RST_SETTINGS
     parts = docutils.core.publish_parts(source=value, writer_name='html',
-                                        settings_overrides=settings)
+                                        settings_overrides=RST_SETTINGS)
     return parts['fragment']
 
 

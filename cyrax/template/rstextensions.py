@@ -5,6 +5,11 @@ from docutils.parsers.rst import directives, Directive
 
 logger = logging.getLogger(__name__)
 
+RST_SETTINGS = {
+    'initial_header_level': 2,
+    'footnote_references': 'superscript'
+    }
+
 
 class Pygments(Directive):
     """ Source code syntax hightlighting.
