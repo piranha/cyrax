@@ -28,8 +28,14 @@ def main():
 
     parser.add_option('-d', '--dest', default='',
         help='destination directory (default: _build in source dir)')
+    parser.add_option('', '--version', default=False, action='store_true',
+                      help='show cyrax version')
 
     opts, args = parser.parse_args()
+
+    if opts.version:
+        print 'Cyrax', __version__
+        sys.exit(0)
 
     if opts.verbose:
         level = logging.DEBUG
