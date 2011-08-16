@@ -37,7 +37,7 @@ News
 Indeed something happens with each release and you are probably interested what
 (and too lazy to read `changelog`_).
 
-.. _changelog: http://hg.piranha.org.ua/cyrax/
+.. _changelog: http://github.com/piranha/cyrax/
 
 2.3 (28.12.2010)
 ~~~~~~~~~~~~~~~~
@@ -60,7 +60,7 @@ Indeed something happens with each release and you are probably interested what
 - ability to write posts in reStructuredText (which as well could serve as an
   `example`_ to writing your own models).
 
-.. _example: http://hg.piranha.org.ua/cyrax/file/tip/cyrax/rstpost.py
+.. _example: http://github.com/piranha/cyrax/blob/master/cyrax/rstpost.py
 
 1.0-1.1 (28.11.2010)
 ~~~~~~~~~~~~~~~~~~~~
@@ -73,6 +73,6 @@ Indeed something happens with each release and you are probably interested what
 .. _Jinja2: http://jinja.pocoo.org/2/
 .. _Jekyll: http://github.com/mojombo/jekyll/
 .. _Hyde: http://github.com/lakshmivyas/hyde/
-.. _repository: http://hg.piranha.org.ua/cyrax/
-.. _docs: http://hg.piranha.org.ua/cyrax/docs/
-.. _example site: http://hg.piranha.org.ua/cyrax/file/tip/content/
+.. _repository: http://github.com/piranha/cyrax/
+.. _docs: http://cyrax.readthedocs.org/
+.. _example site: http://github.com/piranha/cyrax/tree/master/content/

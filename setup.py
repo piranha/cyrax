@@ -10,7 +10,7 @@ import cyrax
 
 setup(name = 'cyrax',
       description = 'Static site generator',
-      long_description = read('README'),
+      long_description = read('README.rst'),
       license = 'BSD',
       version = cyrax.__version__,
       author = 'Alexander Solovyov',
