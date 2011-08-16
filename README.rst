@@ -39,6 +39,12 @@ Indeed something happens with each release and you are probably interested what
 
 .. _changelog: http://github.com/piranha/cyrax/
 
+2.4-2.5 (16.08.2011)
+~~~~~~~~~~~~~~~~~~~~
+
+- drop unused dependency on cherrypy
+- make rst render start with h2 in inner sections
+
 2.3 (28.12.2010)
 ~~~~~~~~~~~~~~~~
 
