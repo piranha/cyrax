@@ -134,9 +134,7 @@ class NonHTML(Entry):
 class Post(Entry):
     @staticmethod
     def check(site, path):
-        if DATE_RE.search(path):
-            return True
-        return False
+        return bool(DATE_RE.search(path))
 
     def __init__(self, site, path, source=None):
         base, Y, M, D, slug = DATE_RE.search(path).groups()
@@ -166,8 +164,7 @@ class Post(Entry):
 
     def get_relative_url(self):
         date = self.date.strftime('%Y/%m/%d')
-        url = posixpath.join(self.base, date, self.slug) + '/'
-        return url
+        return posixpath.join(self.base, date, self.slug) + '/'
 
     @staticmethod
     def register(site):
