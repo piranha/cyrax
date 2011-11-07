@@ -1,3 +1,5 @@
+from os import path as op
+
 from docutils import nodes, core
 from docutils.writers import html4css1
 from docutils.parsers.rst import directives, Directive
@@ -67,7 +69,11 @@ class RstPost(models.Post):
         self._process_tags()
 
     def collect(self):
-        source = file(self.path).read()
+        # TODO: need the general solution for Jinja2 and rst to load sources 
+        # with path prefixes
+        
+        source = file(op.join(self.site.env.loader.searchpath[0],
+            self.path)).read()
         parts = core.publish_parts(source, writer=CyraxWriter(),
                                    settings_overrides=RST_SETTINGS)
         self.settings.read(parts['cyraxmeta'])
