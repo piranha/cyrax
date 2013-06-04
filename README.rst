@@ -31,6 +31,10 @@ Usage
 Read some docs_, run ``cyrax --help`` to read about command line options, look
 at `example site`_.
 
+Also it's really easy to extend Cyrax, see `an example`_.
+
+.. _an example: https://github.com/piranha/osgameclones/blob/master/_ext.py
+
 News
 ----
 
