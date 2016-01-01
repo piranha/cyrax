@@ -6,8 +6,8 @@
 
 Cyrax is a static site generator using Jinja2_ template engine.
 
-It's inspired from Jekyll_ and Hyde_ site generators and started when I realized
-that I'm dissatisfied with both of them by different reasons. When I tried to
+It's inspired by Jekyll_ and Hyde_ site generators and started when I realized
+that I'm dissatisfied with both of them for different reasons. When I tried to
 come up with name I remembered my favourite character from Mortal Kombat 3 so
 here we go.
 
@@ -18,10 +18,10 @@ Well, it's quite simple, as usually::
 
   pip install cyrax
 
-Cyrax depends on Jinja2 template library, so you can install it through your OS
+Cyrax depends on the Jinja2 template library, so you can install it through your OS
 package system (in other case pip will install it automatically).
 
-Note, please, that to use parsers like markdown, or reST, or textile,
+Note, please, that in order to use parsers like markdown, or reST, or textile,
 corresponding libraries should be installed (either python-markdown or
 python-markdown2 are good enough for markdown).
 
