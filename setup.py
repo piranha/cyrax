@@ -11,7 +11,7 @@ import cyrax
 setup(name = 'cyrax',
       description = 'Static site generator',
       long_description = read('README.rst'),
-      license = 'BSD',
+      license = 'ISC',
       version = cyrax.__version__,
       author = 'Alexander Solovyov',
       author_email = 'alexander@solovyov.net',
@@ -25,7 +25,7 @@ setup(name = 'cyrax',
 
       classifiers = [
         'Environment :: Console',
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: ISC License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Topic :: Internet :: WWW/HTTP',
