@@ -20,16 +20,16 @@ setup(name = 'cyrax',
       packages = ['cyrax', 'cyrax.template'],
 
       entry_points = {
-        'console_scripts': ['cyrax = cyrax:main']
-        },
+          'console_scripts': ['cyrax = cyrax:main']
+      },
 
       classifiers = [
-        'Environment :: Console',
-        'License :: OSI Approved :: ISC License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Utilities',
-        ],
+          'Environment :: Console',
+          'License :: OSI Approved :: ISC License (ISCL)',
+          'Operating System :: OS Independent',
+          'Programming Language :: Python',
+          'Topic :: Internet :: WWW/HTTP',
+          'Topic :: Utilities',
+      ],
       platforms='any',
-      )
+)

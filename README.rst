@@ -43,6 +43,11 @@ Indeed something happens with each release and you are probably interested what
 
 .. _changelog: http://github.com/piranha/cyrax/
 
+2.6 (10.10.2016)
+~~~~~~~~~~~~~~~~
+
+- make Jinja2 `do` extension available in templates
+
 2.4-2.5 (16.08.2011)
 ~~~~~~~~~~~~~~~~~~~~
 
