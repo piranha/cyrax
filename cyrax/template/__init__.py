@@ -23,6 +23,7 @@ def initialize_env(source):
     env = Environment(loader=loader, undefined=LoyalUndefined,
                       extensions=[templatetags.MetaInfoExtension,
                                   templatetags.MarkExtension,
+                                  ext.do,
                                   ext.with_],
                       cache_size=-1)
 
