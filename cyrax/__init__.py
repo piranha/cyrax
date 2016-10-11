@@ -2,7 +2,7 @@ import sys, logging
 import os.path as op
 from optparse import OptionParser
 
-__version__ = '2.6'
+__version__ = '2.7'
 logger = logging.getLogger('cyrax')
 
 def main():
