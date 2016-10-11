@@ -16,7 +16,7 @@ simple :ref:`configformat`. Possible configuration options used by Cyrax core:
 - ``parent_tmpl`` - name of parent template for a ``Page`` object. Defaults to
   ``_base.html``.
 
-- ``exclude`` - list of filenames to excluded from resulting site.
+- ``exclude`` - list of filenames (or glob patterns) to exclude from resulting site.
 
 - ``sitecallback`` - Python path to function, which takes a ``Site`` object as
   an argument before traversing tree of files and can perform some

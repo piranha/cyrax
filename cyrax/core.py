@@ -1,6 +1,7 @@
 import os, shutil, logging
 import os.path as op
 import sys
+import glob
 
 from cyrax.conf import Settings
 from cyrax.template import initialize_env
@@ -15,6 +16,7 @@ except ImportError:
 
 
 logger = logging.getLogger(__name__)
+fnmatch = glob.fnmatch.fnmatch
 
 
 def ishidden(name):
@@ -80,16 +82,17 @@ class Site(object):
 
     def _traverse(self):
         events.emit('traverse-started', site=self)
+        exclude = self.settings.get('exclude', [])
 
         for path, _, files in os.walk(self.root):
             relative = path[len(self.root):].lstrip(os.sep)
             if (not relative.startswith('static') and
                 not any(map(ishidden, relative.split(op.sep)))):
                 for f in files:
+                    full = op.join(relative, f)
                     if (f != 'settings.cfg' and
                         not ishidden(f) and
-                        op.join(relative, f) not in self.settings.get('exclude',
-                                                                      [])):
+                        not any(map(lambda x: fnmatch(full, x), exclude))):
                         self.add_page(op.join(relative, f).replace('\\', '/'))
 
         events.emit('site-traversed', site=self)
