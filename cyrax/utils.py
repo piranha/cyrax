@@ -1,9 +1,14 @@
 import os
 import os.path as op
 import posixpath
-from builtins import zip
 from itertools import takewhile
 from urllib.parse import urlparse, urlunparse
+
+
+try:
+    import itertools.izip as zip
+except ImportError:
+    pass
 
 
 def makedirs(path):
