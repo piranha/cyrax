@@ -4,6 +4,7 @@ import datetime
 import posixpath
 import os.path as op
 import logging
+from io import open
 
 from cyrax.conf import Settings
 from cyrax.events import events
@@ -15,10 +16,8 @@ logger = logging.getLogger(__name__)
 DATE_RE = re.compile(r'(.*?)(\d+)[/-](\d+)[/-](\d+)[/-](.*)$')
 
 
-def postcmp(x, y):
-    xd = x.settings.get('updated', x.settings.date)
-    yd = y.settings.get('updated', y.settings.date)
-    return -1 if xd < yd else 1 if xd > yd else 0
+def post_key(x):
+    return x.settings.get('updated', x.settings.date)
 
 
 class Entry(object):
@@ -119,7 +118,7 @@ class Entry(object):
         self.template.globals['entry'] = self
         path = self.get_dest()
         makedirs(op.dirname(path))
-        file(path, 'w').write(self.template.render().encode('utf-8'))
+        open(path, 'wt').write(self.template.render())
 
 
 class NonHTML(Entry):
@@ -147,7 +146,7 @@ class Post(Entry):
         # dumb hack
         self.settings.date = self.date
         self.site.posts.append(self)
-        self.site.posts.sort(cmp=postcmp, reverse=True)
+        self.site.posts.sort(key=post_key, reverse=True)
         self.site.latest_post = self.site.posts[0]
 
         self._process_tags()
@@ -157,7 +156,7 @@ class Post(Entry):
             tagentries = self.site.tags.setdefault(tag, [])
             if self not in tagentries:
                 tagentries.append(self)
-                self.site.tags[tag].sort(cmp=postcmp, reverse=True)
+                self.site.tags[tag].sort(key=post_key, reverse=True)
 
     def __str__(self):
         return self.slug
