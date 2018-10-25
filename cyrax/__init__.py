@@ -34,7 +34,7 @@ def main():
     opts, args = parser.parse_args()
 
     if opts.version:
-        print 'Cyrax', __version__
+        print('Cyrax', __version__)
         sys.exit(0)
 
     if opts.verbose:
