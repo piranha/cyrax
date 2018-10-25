@@ -16,7 +16,7 @@ setup(name = 'cyrax',
       author = 'Alexander Solovyov',
       author_email = 'alexander@solovyov.net',
       url = 'http://piranha.org.ua/cyrax/',
-      install_requires = ['Jinja2', 'smartypants'],
+      install_requires = ['Jinja2', 'markdown2', 'smartypants'],
       packages = ['cyrax', 'cyrax.template'],
 
       entry_points = {

@@ -175,7 +175,7 @@ def smartypants(text):
     except ImportError:
         logger.error("Error in {% smartypants %} filter: The Python smartypants library isn't installed.")
         return text
-    output = smartypants.smartyPants(text)
+    output = smartypants.smartypants(text)
     return jinja2.Markup(output)
 
 
