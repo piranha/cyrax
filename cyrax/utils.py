@@ -2,13 +2,18 @@ import os
 import os.path as op
 import posixpath
 from itertools import takewhile
-from urllib.parse import urlparse, urlunparse
 
 
 try:
     import itertools.izip as zip
 except ImportError:
     pass
+
+
+try:
+    from urllib.parse import urlparse, urlunparse
+except ImportError:
+    from urlparse import urlparse, urlunparse
 
 
 def makedirs(path):
