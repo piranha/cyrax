@@ -6,6 +6,11 @@ from itertools import takewhile
 
 try:
     import itertools.izip as zip
+except ImportError:
+    pass
+
+    
+try:
     from urlparse import urlparse, urlunparse
 except ImportError:
     from urllib.parse import urlparse, urlunparse
