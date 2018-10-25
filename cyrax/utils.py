@@ -6,9 +6,9 @@ from itertools import takewhile
 
 try:
     import itertools.izip as zip
-    from urllib.parse import urlparse, urlunparse
-except ImportError:
     from urlparse import urlparse, urlunparse
+except ImportError:
+    from urllib.parse import urlparse, urlunparse
 
 
 def makedirs(path):
