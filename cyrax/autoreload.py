@@ -112,7 +112,7 @@ def restart_with_reloader():
 
 def reloader(main_func, args, kwargs):
     if os.environ.get("RUN_MAIN") == "true":
-        Thread(target=main_func, args=args, kwargs=kwargs)
+        Thread(target=main_func, args=args, kwargs=kwargs).start()
         try:
             reloader_thread(kwargs['source'], kwargs['dest'])
         except KeyboardInterrupt:
