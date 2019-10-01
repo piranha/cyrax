@@ -43,10 +43,16 @@ Indeed something happens with each release and you are probably interested what
 
 .. _changelog: http://github.com/piranha/cyrax/
 
+3.0 (01.10.2019)
+~~~~~~~~~~~~~~~~
+
+- Python 3 support
+- `settings.cfg` renamed to `.cyrax.cfg`
+
 2.7 (11.10.2016)
 ~~~~~~~~~~~~~~~~
 
-- support for globs in `exclude` in `settings.cfg`
+- support for globs in `exclude` in `.cyrax.cfg`
 
 2.6 (10.10.2016)
 ~~~~~~~~~~~~~~~~

@@ -48,7 +48,12 @@ class Site(object):
             shutil.rmtree(dest)
 
         self.settings = Settings(parent_tmpl='_base.html')
-        conf = op.join(self.root, 'settings.cfg')
+
+        conf = op.join(self.root, '.cyrax.cfg')
+        if not op.exists(conf):
+            conf = op.join(self.root, 'settings.cfg')
+            if op.exists(conf):
+                logger.warn('settings.cfg is deprecated, please rename to .cyrax.cfg')
         if op.exists(conf):
             self.settings.read(open(conf, 'rt').read())
 
