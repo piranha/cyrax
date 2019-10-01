@@ -6,7 +6,7 @@ class MetaInfoExtension(Extension):
     tags = set(['meta'])
 
     def parse(self, parser):
-        token = parser.stream.next()
+        token = next(parser.stream)
         lineno = token.lineno
 
         meta = parser.parse_statements(['name:endmeta'], drop_needle=True)
@@ -36,10 +36,10 @@ class MarkExtension(Extension):
     tags = set(['mark'])
 
     def parse(self, parser):
-        token = parser.stream.next()
+        token = next(parser.stream)
         lineno = token.lineno
 
-        name = parser.stream.next().value
+        name = next(parser.stream).value
         args = [nodes.Name('entry', 'load'), nodes.Const(name)]
         body = parser.parse_statements(['name:endmark'], drop_needle=True)
 

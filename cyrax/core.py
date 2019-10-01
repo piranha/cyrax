@@ -2,6 +2,7 @@ import os, shutil, logging
 import os.path as op
 import sys
 import glob
+from io import open
 
 from cyrax.conf import Settings
 from cyrax.template import initialize_env
@@ -33,7 +34,7 @@ def impcallback(relpath, root):
 
 def get_entry(site, path):
     try:
-        Type = (t for t in TYPE_LIST if t.check(site, path)).next()
+        Type = next(t for t in TYPE_LIST if t.check(site, path))
     except StopIteration:
         logger.error("Can't determine type for %s" % path)
         return
@@ -49,7 +50,7 @@ class Site(object):
         self.settings = Settings(parent_tmpl='_base.html')
         conf = op.join(self.root, 'settings.cfg')
         if op.exists(conf):
-            self.settings.read(file(conf).read().decode('utf-8'))
+            self.settings.read(open(conf, 'rt').read())
 
         site_base_path = base_path(self.url)
         self.dest = op.join(dest, url2path(site_base_path[1:]))
@@ -77,7 +78,7 @@ class Site(object):
     def __getattr__(self, name):
         try:
             return self.settings[name]
-        except KeyError, e:
+        except KeyError as e:
             raise AttributeError(str(e))
 
     def _traverse(self):

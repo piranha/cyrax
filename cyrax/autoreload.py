@@ -31,20 +31,8 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os, sys, time
-
 import logging
-
-try:
-    import thread
-except ImportError:
-    import dummy_thread as thread
-
-# This import does nothing, but it's necessary to avoid some race conditions
-# in the threading module. See http://code.djangoproject.com/ticket/2330 .
-try:
-    import threading
-except ImportError:
-    pass
+from threading import Thread
 
 logger = logging.getLogger(__name__)
 
@@ -124,7 +112,7 @@ def restart_with_reloader():
 
 def reloader(main_func, args, kwargs):
     if os.environ.get("RUN_MAIN") == "true":
-        thread.start_new_thread(main_func, args, kwargs)
+        Thread(target=main_func, args=args, kwargs=kwargs).start()
         try:
             reloader_thread(kwargs['source'], kwargs['dest'])
         except KeyboardInterrupt:
@@ -142,4 +130,3 @@ def main(main_func, args=None, kwargs=None):
     if kwargs is None:
         kwargs = {}
     reloader(main_func, args, kwargs)
-

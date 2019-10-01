@@ -1,11 +1,18 @@
 import os
 import posixpath
-from SimpleHTTPServer import SimpleHTTPRequestHandler
-from BaseHTTPServer import HTTPServer
-import urllib
 import logging
 
 from cyrax import autoreload, core
+
+
+try:
+    from urllib import unquote
+    from BaseHTTPServer import HTTPServer
+    from SimpleHTTPServer import SimpleHTTPRequestHandler
+except ImportError:
+    from http.server import SimpleHTTPRequestHandler, HTTPServer
+    from urllib.parse import unquote
+
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +30,7 @@ class CyraxHTTPRequestHandler(SimpleHTTPRequestHandler):
         # abandon query parameters
         path = path.split('?', 1)[0]
         path = path.split('#', 1)[0]
-        path = posixpath.normpath(urllib.unquote(path))
+        path = posixpath.normpath(unquote(path))
         words = path.split('/')
         words = filter(None, words)
         try:
