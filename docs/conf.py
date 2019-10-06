@@ -10,7 +10,7 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.todo']
 source_suffix = '.rst'
 master_doc = 'index'
 project = u'Cyrax'
-copyright = u'2009-2011, Alexander Solovyov'
+copyright = u'2009-2019, Alexander Solovyov'
 version = release = cyrax.__version__
 exclude_trees = ['_build']
 
