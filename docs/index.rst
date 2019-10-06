@@ -28,14 +28,14 @@ Well, it's quite simple, as usually::
 If you've cloned `repository`_, then maybe you want to know that Cyrax depends
 on Jinja2 template library.
 
-.. _repository: http://hg.piranha.org.ua/cyrax/
+.. _repository: https://github.com/piranha/cyrax/
 
 Usage
 -----
 
 Run ``./cyrax``. Look at ``content`` `subdirectory`_ for example site.
 
-.. _subdirectory: http://hg.piranha.org.ua/cyrax/file/tip/content/
+.. _subdirectory: https://github.com/piranha/cyrax/tree/master/content/
 
 Contents:
 

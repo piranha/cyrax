@@ -15,7 +15,7 @@
     <name>{{ site.author }}</name>
   </author>
   <link href="{{ site.url }}" rel="alternate"></link>
-  <generator uri="http://hg.piranha.org.ua/cyrax/">cyrax</generator>
+  <generator uri="https://github.com/piranha/cyrax/">cyrax</generator>
 
 {%- for post in site.posts[:5] %}
   <entry>
