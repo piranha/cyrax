@@ -20,7 +20,9 @@ simple :ref:`configformat`. Possible configuration options used by Cyrax core:
 
 - ``sitecallback`` - Python path to function, which takes a ``Site`` object as
   an argument before traversing tree of files and can perform some
-  modifications to behavior of Cyrax.
+  modifications to behavior of Cyrax. Example_.
 
 Any other options will be set on your ``Site`` object, which is available in any
 template under name of ``site``.
+
+.. _Example: https://github.com/opengaming/osgameclones/blob/master/_ext.py#L282
