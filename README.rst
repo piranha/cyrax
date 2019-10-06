@@ -3,7 +3,9 @@
 =======
  Cyrax
 =======
-.. image:: https://img.shields.io/pypi/v/cyrax   :alt: PyPI
+.. image:: https://img.shields.io/pypi/v/cyrax
+   :alt: PyPI
+   :target: https://pypi.org/project/cyrax/
 
 Cyrax is a static site generator using Jinja2_ template engine.
 
