@@ -46,6 +46,11 @@ Indeed something happens with each release and you are probably interested what
 
 .. _changelog: http://github.com/piranha/cyrax/
 
+3.1 (17.12.2019)
+~~~~~~~~~~~~~~~~
+
+- Fix for rendering unicode data to file
+
 3.0 (01.10.2019)
 ~~~~~~~~~~~~~~~~
 
