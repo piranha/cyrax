@@ -118,7 +118,7 @@ class Entry(object):
         self.template.globals['entry'] = self
         path = self.get_dest()
         makedirs(op.dirname(path))
-        open(path, 'wt').write(self.template.render())
+        open(path, 'wt', encoding='utf-8').write(self.template.render())
 
 
 class NonHTML(Entry):
